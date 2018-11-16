@@ -1,5 +1,15 @@
 # Ejercicios
 
+Doctrine
+
+// Máxima nota de cada asignaturas de un alumno
+SELECT al.nombre, as.nombre, max(n.nota)
+FROM nota n
+  INNER JOIN asignatura as ON as.id = n.asignatura_id
+  INNER JOIN alumnos_asignaturas aa ON aa.asignatura_id = as.id
+  INNER JOIN alumno al ON al.id = aa.alumno_id
+group by as.nombre
+
 ## Subscriber
 
 ### Enunciado
