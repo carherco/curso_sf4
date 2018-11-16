@@ -304,7 +304,7 @@ $category = $this->getDoctrine()
     $products = $category->getProducts();
 ```
 
-### Mapeo de relaciones
+### Mapeo de relaciones
 
 Los tipos de asociaciones que ofrece Doctrine son los siguientes:
 
@@ -588,7 +588,7 @@ class User
 }
 ```
 
-## Mapping defaults
+## Mapping defaults
 
 Las definiciones de @JoinColumn y de @JoinTable son opcionales y tienen como valores por defecto los siguientes:
 
@@ -736,7 +736,7 @@ $em->transactional(function($em) {
 });
 ```
 
-## Cascade
+## Cascade
 
 Podemos configurar modificaciones en cascada a dos niveles: nivel doctrine o nivel base de datos.
 
