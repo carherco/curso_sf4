@@ -576,4 +576,4 @@ $anne = $normalizer->denormalize(array('first_name' => 'Anne'), 'Person');
 
 ## ¿Propiedades private o protected?
 
-When you want to serialize/unserialize entities you have to make all entity properties protected, never private. The reason for this is, if you serialize a class that was a proxy instance before, the private variables won't be serialized and a PHP Notice is thrown.
+Si quieres serializar ENTIDADES tienes que declarar las propiedades como *protected*. La razón es porque is serializas una clase que ha sido anteriormente una instancia de un proxy, las variables *private* no serán serializadas y se lanzará un *PHP Notice*.

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumno index{% endblock %}
+
+{% block body %}
+    <h1>Alumno index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NExpediente</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>FechaNacimiento</th>
+                <th>Sexo</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for alumno in alumnos %}
+            <tr>
+                <td>{{ alumno.id }}</td>
+                <td>{{ alumno.nExpediente }}</td>
+                <td>{{ alumno.nombre }}</td>
+                <td>{{ alumno.apellidos }}</td>
+                <td>{{ alumno.fechaNacimiento ? alumno.fechaNacimiento|date('Y-m-d') : '' }}</td>
+                <td>{{ alumno.sexo ? 'Yes' : 'No' }}</td>
+                <td>{{ alumno.email }}</td>
+                <td>{{ alumno.telefono }}</td>
+                <td>{{ alumno.grado.nombre }}</td>
+                <td>
+                    <a href="{{ path('alumno_show', {'id': alumno.id}) }}">show</a>
+                    <a href="{{ path('alumno_edit', {'id': alumno.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('alumno_new') }}">Create new</a>
+{% endblock %}

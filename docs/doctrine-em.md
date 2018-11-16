@@ -153,8 +153,6 @@ La política *Deferred Implicit* es la política de control de cambios por defec
 
 La política *Deferred Explicit* es similar a la política *Deferred Implicit* porque detecta cambios a través de una comparación propiedad por propiedad. La diferencia es que Doctrine sólo tiene en cuenta las entidades que se han marcado explícitamente para la detección de cambio con persist() y las que tengan configurado *save en cascada*. El resto de entidades son ignoradas.
 
-Por lo tanto, las operaciones) (ras son potencialmente más barato con esta política. El aspecto negativo de esta cuenta es que si usted tiene una bastante grande aplicación y pasar sus objetos a través de varias capas para fines de procesamiento y las tareas de negocio puede que tenga que realizar un seguimiento de ti mismo qué entidades han cambiado en el camino para que pueda pasarlos a EntityManager # persistir ().
-
 Esta política puede ser configurada de la siguiente manera:
 
 ```php
@@ -357,4 +355,3 @@ https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.h
 ### Es posible definir Listeners específicos para una entidad
 
 https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.html#implementing-event-listeners
-

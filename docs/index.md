@@ -4,25 +4,25 @@ Viernes 16 (4h):
 
 - [Doctrine](./doctrine.md)
   - [Repositorios](./doctrine-repositorios.md)
-  - [El lenguaje DQL](./doctrine-dql)
+  - [El lenguaje DQL](./doctrine-dql.md)
   - [Query Builder](./doctrine-query-builder.md)
-  - [Native SQL](./nativesql.md)
+  - [Native SQL](./doctrine-nativesql.md)
   - [El Entity Manager](./doctrine-em.md)
   - [Ingeniería inversa](./doctrine-ingenieriainversa.md)
   - [Buenas prácticas](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/best-practices.html#best-practices)
-  - [MongoDB](./mongo.db)
+  - [MongoDB](./mongo.md)
+
+Sábado 17 (6h):
+
+- Testing con PHPUnit
 - [Servicios](./servicios.md) e [inyección de dependencias](./inyeccion-dependencias.md)
-
-Sábado 17 (8h):
-
 - [El serializador de Symony](./serializer.md)
 - [Eventos](./events.md)
+- Comandos de consola
+
+Sábado 24 (6h):
+
 - [Routing](./routing.md)
 - [Seguridad](./security) y [Voters](./voters.md)
-- Comandos de consola
-- Testing con PHPUnit
-
-Sábado 24 (4h):
-
 - Creación de APIs rest
 - [Creación y consumo de WebServices](./soap.md)
