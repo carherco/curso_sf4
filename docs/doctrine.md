@@ -57,7 +57,9 @@ Podéis ver una lista de todos los comandos utilizando el siguiente comando:
 
 > php bin/console list doctrine
 
-Mapeo básico de entidades: https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html#basic-mapping
+### Mapeo básico de entidades
+
+https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html#basic-mapping
 
 ### Validar las entidades
 
@@ -674,6 +676,26 @@ class User
 }
 ```
 
+### Owning side and inverse side
+
+Al asignar las asociaciones bidireccionales, es importante entender el concepto de **owning side** y de **inverse side**. Estas son las reglas generales:
+
+- Las relaciones pueden ser bidireccionales o unidireccionales.
+- Una relación bidireccional tiene un *owning side* y un *inverse side*.
+- Una relación unidireccional solamente tiene *owning side*.
+- Doctrine solamente comprueba si ha habido cambios en la entidad *owning side*.
+
+Las siguientes reglas se aplican a bidireccionales asociaciones:
+
+- El *inverse side* tiene que tener el atributo mappedBy en las OneToOne, OneToMany o ManyToMany.
+- El *owning side* tiene que tener el atributo inversedBy en las OneToOne, ManyToOne o ManyToMany.
+- ManyToOne es siempre el *owning side* de una asociación bidireccional.
+- OneToMany es siempre el *inverse side* de una asociación bidireccional.
+- El *owning side* de una OneToOne es la entidad con la tabla que contiene la clave externa.
+- En una ManyToMany tenemos que decidir cuál es la owning y cuál la inverse.
+
+Doctrine solamente comprueba la *owning side*. Los cambios realizados sólo en el *inverse side* se ignoran.
+
 ## Transacciones
 
 ### Transacción implícita o automática
@@ -712,6 +734,29 @@ $em->transactional(function($em) {
     $user->setName('George');
     $em->persist($user);
 });
+```
+
+## Cascade
+
+Podemos configurar modificaciones en cascada a dos niveles: nivel doctrine o nivel base de datos.
+
+A nivel de doctrine
+
+```php
+/**
+ * @OneToMany(targetEntity="Phonenumber", mappedBy="user", cascade={"persist", "remove", "merge", "refresh"}, orphanRemoval=true)
+ */
+public $phonenumbers;
+```
+
+A nivel de base de datos en @JoinColumn
+
+```php
+/**
+ * @OneToOne(targetEntity="Customer")
+ * @JoinColumn(name="customer_id", referencedColumnName="id", onDelete="cascade", onUpdate="cascade")
+ */
+private $customer;
 ```
 
 ## Extensiones de doctrine
