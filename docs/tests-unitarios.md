@@ -30,4 +30,46 @@ Nuestra clase de test es una clase situada dentro del directorio **tests** y que
 
 TestCase no es más que la clase de PHPUnit que contiene todos los métodos/assertions.
 
+## Mock Services
 
+https://github.com/ramunasd/symfony-container-mocks
+
+
+```php
+namespace Acme\Bundle\AcmeBundle\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Acme\Bundle\AcmeBundle\Service\Custom;
+
+class AcmeControllerTest extends WebTestCase
+{
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client $client
+     */
+    private $client;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->client = static::createClient();
+    }
+
+    public function tearDown()
+    {
+        $this->client->getContainer()->tearDown();
+        $this->client = null;
+
+        parent::tearDown();
+    }
+
+    public function testSomethingWithMockedService()
+    {
+        $this->client->getContainer()->prophesize('acme.service.custom', Custom::class)
+            ->someMethod([])
+            ->willReturn(false);
+
+        // ...
+    }
+}
+```
