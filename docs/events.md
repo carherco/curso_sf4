@@ -4,9 +4,7 @@ Durante la ejecución de una aplicación Symfony, se lanzan muchas notificacione
 
 En Symfony la gestión de eventos la realiza el componente **EventDispatcher**. Este componente implementa el patrón *Mediator* para gestionar los eventos.
 
-
 Por ejemplo, justo cuando symfony crea el objeto Response, puede ser útil que otros elementos del sistema, servicios, bundles, etc tuvieran acceso a ella para modificarla (por ejemplo, para añadir algunas headers de caché). El funcionamiento para hacer esto posible sería el siguiente:
-
 
 1) Un listener (un objeto PHP) le dice al EventDispatcher que quiere escuchar el evento kernel.response;
 2) En un momento dado, el kernel de Symfony le dice al EventDispatcher que "dispare" el evento kernel.response, pasándole un objeto Event que tiene acceso al objeto Responses.
@@ -74,22 +72,15 @@ $dispatcher->dispatch(ProductoCreadoEvent::NAME, $evento);
 El segundo parámetro del método dispatch es opcional. Si no se le pasa, el propio Dispatcher creará un Event básico.
 
 ```php
-$dispatcher->dispatch('order.placed');
+$dispatcher->dispatch('producto.creado');
 ```
 
 Además, el dispather siempre devuelve el objeto pasado como evento:
 
 ```php
 $evento = new ProductoCreadoEvent($producto);
-$producto = $dispatcher->dispatch('bar.event', $event)->getProducto();
+$producto = $dispatcher->dispatch(ProductoCreadoEvent::NAME, $event)->getProducto();
 ```
-
-En el siguiente vídeo veremos cómo crear un listener que responda al evento.
-
-## Enlaces interesantes
-
-El patrón Mediator: https://en.wikipedia.org/wiki/Mediator_pattern
-
 ## Creación de un listener
 
 Para crear un listener hay que crear una clase con un método que recibirá la instancia del objeto Event y en el que ejecutaremos la lógica que deseemos que se ejecute al producirse el evento.
@@ -262,7 +253,6 @@ Durante el procesamiento de una petición HTTP, el framework Symfony (o cualquie
 
 ### La clase KernelEvent
 
-
 Cada evento generado por el componente HttpKernel es una subclase de la clase KernelEvent
 Each event dispatched by the HttpKernel component is a subclass of KernelEvent, la cual proporciona la siguiente información:
 
@@ -375,3 +365,7 @@ Existe un comando para listar todos los eventos y sus listeners:
 También existe un comando para listar los listeners de un determinado evento:
 
 > bin/console debug:event-dispatcher kernel.exception
+
+## Enlaces interesantes
+
+El patrón Mediator: https://en.wikipedia.org/wiki/Mediator_pattern

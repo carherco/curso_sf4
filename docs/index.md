@@ -14,15 +14,20 @@ Viernes 16 (4h):
 
 Sábado 17 (6h):
 
-- Testing con PHPUnit
+- [Testing con PHPUnit](./tests.md)
+  - [Unitarios](./tests-unitarios.md)
+  - [Funcionales](./tests-funcionales.md)
+  - [Fixtures](./tests-fixtures.md)
+  - [Testeo de repositorios](./testing-repositories.md)
+  - [Testeo de comandos](./testing-commands.md)
 - [Servicios](./servicios.md) e [inyección de dependencias](./inyeccion-dependencias.md)
 - [El serializador de Symony](./serializer.md)
 - [Eventos](./events.md)
-- Comandos de consola
+- [Comandos de consola](./comandos-consola.md)
 
 Sábado 24 (6h):
 
 - [Routing](./routing.md)
 - [Seguridad](./security) y [Voters](./voters.md)
-- Creación de APIs rest
+- [Creación de APIs rest]
 - [Creación y consumo de WebServices](./soap.md)

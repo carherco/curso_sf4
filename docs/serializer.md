@@ -541,7 +541,7 @@ $json = $serializer->serialize($company, 'json');
 $companyCopy = $serializer->deserialize($json, Company::class, 'json');
 ```
 
-### El name converter CamelCaseToSnakeCaseNameConverter
+### El name converter CamelCaseToSnakeCaseNameConverter
 
 Symfony viene con un name converter denominado **CamelCaseToSnakeCaseNameConverter** que convierte los nombres de tipo CamelCase a SnakeCase.
 

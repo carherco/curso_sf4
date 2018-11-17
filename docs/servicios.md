@@ -6,12 +6,22 @@ En Symfony, estos "objetos útiles" se llaman servicios, y viven dentro de un ob
 
 ## El contenedor de Servicios
 
-El contenedor de servicios actúa mediante el patrón de inyección de dependencias cuando tipamos la clase en un parámetro de entrada de un controlador o de un constructor.
+El contenedor de servicios actúa mediante el patrón de inyección de dependencias cuando tipamos la clase en un parámetro de entrada de una acción de un controlador o de un constructor de otro servicio.
 
 ```php
 public function index(Doctrine\ORM\EntityManagerInterface $em)
 {
-    
+
+}
+```
+
+También utiliza la inyección de dependencias si se lo pedimos directamente
+
+```php
+public function index()
+{
+  $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+  $em = $this->get('doctrine.orm.entity_manager'); // Forma abreviada
 }
 ```
 
@@ -116,7 +126,6 @@ La clave *exclude* se utiliza para excluir directorios.
 ```
 
 ### Registrar varios servicios con la misma clase
----------------------------------------------
 
 Es posible registrar varios servicios distintos que utilicen la misma clase. Basta con ponerles identificadores distintos.
 
@@ -146,3 +155,86 @@ services:
     AppBundle\Updates\SiteUpdateManager: '@site_update_manager.superadmin'
 ```
 
+### Configurar un servicio para que no sea compartido
+
+```yml
+services:
+    App\SomeNonSharedService:
+        shared: false
+        # ...
+```
+
+## Tipos de inyección
+
+### Constructor inyection
+
+```php
+namespace App\Mail;
+
+class NewsletterManager
+{
+    private $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    // ...
+}
+```
+
+```yml
+services:
+    App\Mail\NewsletterManager:
+        arguments: ['@mailer']
+```
+
+### Setter inyection
+
+```php
+class NewsletterManager
+{
+    private $mailer;
+
+    public function setMailer(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    // ...
+}
+```
+
+```yml
+services:
+     # ...
+
+     app.newsletter_manager:
+         class: App\Mail\NewsletterManager
+         calls:
+             - [setMailer, ['@mailer']]
+```
+
+### Property Injection
+
+Solamente funciona con propiedades públicas.
+
+```php
+class NewsletterManager
+{
+    public $mailer;
+
+    // ...
+}
+```
+
+```yaml
+services:
+     # ...
+
+     app.newsletter_manager:
+         class: App\Mail\NewsletterManager
+         properties:
+             mailer: '@mailer'
+```
