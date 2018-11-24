@@ -27,7 +27,14 @@ Sábado 17 (6h):
 
 Sábado 24 (6h):
 
+- https://matthiasnoback.nl/2014/07/test-doubles/
+- https://symfony.com/doc/current/testing/database.html
+- https://github.com/Codeception/Codeception/issues/3391
+- https://gianarb.it/blog/symfony-unit-test-controller-with-phpunit
+- https://symfony.com/blog/new-in-symfony-2-8-clock-mocking-and-time-sensitive-tests
 - [Routing](./routing.md)
-- [Seguridad](./security) y [Voters](./voters.md)
-- [Creación de APIs rest]
+- [Seguridad](./security)
+- [Voters](./voters.md)
 - [Creación y consumo de WebServices](./soap.md)
+- [Cómo crear un Data Collector personalizado](./profiler.md)
+- [Logs](./logs.md)

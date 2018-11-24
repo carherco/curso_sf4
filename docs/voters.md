@@ -5,7 +5,7 @@ Los voters son clases que deciden si un usuario puede acceder a un recurso o no.
 
 Cada vez que se llama al método **isGranted()** o al método **denyAccessUnlessGranted()** Symfony hace una llamada a cada clase voter que haya registrada en el sistema.
 
-Cada uno de los voters decidirá si permite al usuario realizar la acción, si le deniegar realizarla o si se abstiene de decidir nada. Symfony recoge la respuesta de todos los Voters y toma la decisión final en base a la estrategia configurada.
+Cada uno de los voters decidirá si permite al usuario realizar la acción, si le deniega realizarla o si se abstiene de decidir nada. Symfony recoge la respuesta de todos los Voters y toma la decisión final en base a la estrategia configurada.
 
 La clase Voter
 --------------
@@ -126,7 +126,7 @@ Normalmente tendremos un único voter.
 
 Otras veces podemos tener varios voters, pero solamente un voter votará en cada ocasión y el resto se abstendrán.
 
-Y en raras ocasiones tendremos varios voters tomando una misma decisión.
+Y en raras ocasiones tendremos varios voters tomando una misma decisión. Por ejemplo, se podría dar el caso de un voter compruebe si el usuario es miembro del grupo del cual está intentando ver información, y otro voter puede estar comprobando si el usuario tiene más de 18 años para acceder a dicho contenido. En una plataforma de películas online: Cierta película es de pago (hay que comprobar si el usuario es miembro de pago) y además es una película para mayores de 18 años (también hay que comprobarlo).
 
 Por defecto, cuando varios voters tienen que votar si permiten o no un acceso, basta con que uno de ellos lo permita, para que el usuario logre el acceso.
 
@@ -142,6 +142,22 @@ security:
     access_decision_manager:
         strategy: unanimous
 ```
+
+En caso de que todos los voters se abstengan, symfony NO permite el acceso. Para cambiar este comportamiento (a partir de la versión 4.1) hay que configurar el access_decision_manager de la siguiente manera:
+
+```php
+security:
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: false
+```
+
+Ejemplos comunes de Voters:
+
+- Solamente los dueños de una entidad pueden ver o editar dicha entidad.
+- Solamente los miembros de un grupo pueden ver el contenido del grupo.
+- Restricciones de acceso por edad, región u otra propiedad del usuario.
+- Restricciones de acceso por IP (blacklists).
 
 Soporte para ACL
 ----------------

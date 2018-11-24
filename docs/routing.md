@@ -29,6 +29,18 @@ user_edit:
 
 El \d+ es una expresión regular. 
 
+A partir de la versión 4.1, se acepta el siguiente formato:
+
+```php
+/**
+ * @Route("/blog/{page<\d+>}", name="blog_list")
+ */
+public function list($page)
+{
+    // ...
+}
+```
+
 Otro ejemplo con expresiones regulares podría ser:
 
 ```yml
@@ -78,6 +90,20 @@ class MainController extends Controller
     {
     }
 ```
+
+Desde la versión 4.1, se admite esta sintaxis
+
+```php
+/**
+* @Route("/blog/{page<\d+>?1}", name="blog_list")
+*/
+public function list($page)
+{
+    // ...
+}
+```
+
+
 
 Sin hacer nada más, symfony aplicará automáticamente el idioma correspondiente.
 
@@ -135,6 +161,42 @@ class ArticleController extends Controller
 }
 ```
 
+## Localized Routing (i18n)
+
+```php
+/**
+ * @Route({
+ *     "nl": "/over-ons",
+ *     "en": "/about-us"
+ * }, name="about_us")
+ */
+public function about()
+{
+    // ...
+}
+```
+
+```yaml
+about_us:
+    path:
+        nl: /over-ons
+        en: /about-us
+    controller: App\Controller\CompanyController::about
+```
+
+Cuando una ruta hace match, el _locale se establece automáticamente.
+
+Muchas veces, las rutas de nuestra aplicación van prefijadas con el _locale. Esto se puede configurar de la siguiente forma:
+
+```yaml
+controllers:
+    resource: '../../src/Controller/'
+    type: annotation
+    prefix:
+        en: '' # don't prefix URLs for English, the default locale
+        nl: '/nl'
+```
+
 ## Redirecciones
 
 ### Redireccionar a otra url
@@ -160,7 +222,21 @@ admin:
         permanent: true
 ```
 
-Ejercicio: investigar la diferencia entre poner permanent: true o false.
+### Mantener los query params en la redirección y el Request Method
+
+A partir de la versión 4.1 podemos indicar que queremos manterer los query params y/o el método de la petición
+
+```yml
+# redirecting the homepage
+homepage:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /app
+        permanent: true
+        keepQueryParams: true
+        keepRequestMethod: true
+```
 
 ## Depuración de rutas
 
@@ -223,17 +299,32 @@ Se pueden utilizar parámetros en la sección *host*:
 # config/routes.yaml
 projects_homepage:
     path:       /
-    host:       "{project_name}.example.com"
+    host:       "%project_name%.example.com"
     controller: App\Controller\MainController::projectsHomepage
-
 homepage:
     path:       /
     controller: App\Controller\MainController::homepage
+contact:
+    path:       /{_locale}/contact
+    controller: App\Controller\MainController::contact
+    requirements:
+        _locale: '%app.locales%'
+with_prefix:
+    path:       /%app.route_prefix%/contact
+    controller: App\Controller\MainController::contact
 ```
+
+```yaml
+parameters:
+    project.name: myproject
+    app.locales: en|es
+    app.route_prefix: o2o
+```
+
 
 Si se usa algún parámetro, puede tener valor por defecto, restricciones, etc.
 
-## Restricción de rutas por método 
+## Restricción de rutas por método
 
 ```yml
 api_user_show:
@@ -305,25 +396,3 @@ class MainController extends Controller
 (se puede gestionar también con el componente de seguridad de symfony)
 
 https://symfony.com/doc/current/security/force_https.html
-
-## Puede interesar
-
-Rutas configuradas en BBDD
---------------------------
-
-https://symfony.com/doc/current/routing/routing_from_database.html
-
-
-How to Generate Routing URLs in JavaScript
-------------------------------------------
-
-https://symfony.com/doc/current/routing/generate_url_javascript.html
-
-
-Utilizar parameters en el fichero routing.yml
-
-https://symfony.com/doc/master/routing/service_container_parameters.html
-
-Permitir una / en un parámetro de una ruta
-
-https://symfony.com/doc/master/routing/slash_in_parameter.html

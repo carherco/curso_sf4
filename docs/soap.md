@@ -18,7 +18,7 @@ Vamos a trabajar con Zend:
 
 > composer require zendframework/zend-soap
 
-## Programación del servidor
+## Programación del servidor
 
 ### Creación de una clase con los métodos del servicio
 
@@ -61,7 +61,7 @@ Esta clase define un servicio (método) method1 al que se le pasa un argumento d
 
 Es obligatorio, documentar las funciones con @param y @return para que se pueda construir el WSDL.
 
-### Creación del controlador que expondrá los servicios
+### Creación del controlador que expondrá los servicios
 
 ```php
 namespace App\Controller;
@@ -183,7 +183,7 @@ http://127.0.0.1:8000/soap?wsdl
 
 Pero cuando se llame sin el argumento ?wsdl, deberá procesar la petición llamando al servicio correspondiente.
 
-## Programación del cliente
+## Programación del cliente
 
 La parte del cliente es todavía más sencilla:
 
