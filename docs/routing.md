@@ -318,7 +318,7 @@ with_prefix:
 parameters:
     project.name: myproject
     app.locales: en|es
-    app.route_prefix: o2o
+    app.route_prefix: af
 ```
 
 
@@ -396,3 +396,119 @@ class MainController extends Controller
 (se puede gestionar también con el componente de seguridad de symfony)
 
 https://symfony.com/doc/current/security/force_https.html
+
+
+
+Novedades en Symfony 4.1 y 4.2
+==============================
+
+Importación de rutas con prefijo
+--------------------------------
+
+Se ha introducido la opción **name_prefix** para cargar rutas de otro fichero poniéndoles un prefijo:
+
+```yml
+...
+
+api:
+    resource: ../controller/routing.yaml
+    # this prefix is added to all the action route names
+    name_prefix: api_
+    # this prefix is added to all the action URLs
+    prefix: /api
+```
+
+Esto permite cargar un fichero de rutas varias veces o configurar el prefijo para las rutas de un bundle.
+
+Redirecciones 307 y 308
+-----------------------
+
+Las redirecciones 301 y 302 transforman las peticiones POST en peticiones GET. Para resolver ese problema, se introdujeron dos nuevos códigos HTTP en el estándar: el 307 y el 308. 
+
+En la versión 4.1 de Symfony se han adaptado a estos nuevos códigos con la opción **keepRequestMethod**:
+
+```yml
+route_301:
+    # ...
+    defaults:
+        # ...
+        permanent: true
+
+route_302:
+    # ...
+    defaults:
+        # ...
+        permanent: false
+
+route_307:
+    # ...
+    defaults:
+        # ...
+        permanent: false
+        keepRequestMethod: true
+
+route_308:
+    # ...
+    defaults:
+        # ...
+        permanent: true
+        keepRequestMethod: true
+```
+
+Rutas I18n
+----------
+
+A partir de 4.1 es posible definir distintos paths para una misma ruta dependiendo el idioma:
+
+```yml
+contact:
+    controller: App\Controller\ContactController::send
+    path:
+        en: /send-us-an-email
+        nl: /stuur-ons-een-email
+```
+
+En la versión con anotaciones sería:
+
+```php
+use Symfony\Component\Routing\Annotation\Route;
+
+class ContactController
+{
+    /**
+     * @Route({
+     *     "en": "/send-us-an-email",
+     *     "nl": "/stuur-ons-een-email"
+     * }, name="contact")
+     */
+    public function send()
+    {
+        // ...
+    }
+}
+```
+
+
+La generación de la ruta cogería el locale que se esté utilizando en ese momento, aunque también podemos elegir un locale concreto
+
+
+```php
+// uses the current request locale
+$url = $urlGenerator->generate('contact');
+
+// ignores the current request locale and generates '/stuur-ons-een-email'
+$url = $urlGenerator->generate('contact', ['_locale' => 'nl']);
+```
+
+
+También se pueden utilizar con prefijos:
+
+```yml
+# config/routes/annotations.yaml
+site:
+    resource: '../src/Controller/'
+    type: annotation
+    prefix:
+        en: '/site'
+        es: '/sitio'
+```

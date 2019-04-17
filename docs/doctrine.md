@@ -761,8 +761,7 @@ private $customer;
 
 ## Extensiones de doctrine
 
-Para ciertas estructuras y comportamientos habituales de tablas, hay desarrolladores
-que programan extensiones de doctrine.
+Para ciertas estructuras y comportamientos habituales de tablas, hay desarrolladores que programan extensiones de doctrine.
 
 https://symfony.com/doc/current/doctrine/common_extensions.html
 

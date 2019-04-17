@@ -34,6 +34,17 @@ DQL no permite hacer INSERTS. Los inserts se deben realizar mediante el método 
 
 En las consultas de tipo SELECT con DQL, Doctrine hidrata los resultados en las Entidades correspondientes.
 
+Tipos de respuesta
+------------------
+
+```php
+$result = $query->getResult();
+$single = $query->getSingleResult();
+$array = $query->getArrayResult();
+$scalar = $query->getScalarResult();
+$singleScalar = $query->getSingleScalarResult();
+```
+
 SELECT
 ------
 
@@ -104,6 +115,11 @@ $query->setParameters(array(
 ));
 $users = $query->getResult();
 ```
+
+Es importante usar parametrizar las consultas:
+
+- Protege contra SQL INJECTION
+- Crea *Prepared Statements* que se pueden reutilizar mejorando así el rendimiento
 
 FUNCIONES
 ---------

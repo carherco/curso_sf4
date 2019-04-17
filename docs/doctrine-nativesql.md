@@ -16,9 +16,11 @@ Evidentemente, si ejecutamos consultas de esta forma, no tendremos los datos en 
 
 Si queremos hidratar los resultados en entidades, tenemos que utilizar las denominadas Native SQL.
 
-## Native SQL
+## Native SQL
 
-Para crear sqls nativas se utiliza el métdo **EntityManager#createNativeQuery($sql, $resultSetMapping)**. Como podemos ver, este método requiere de dos argumentos: la propia sql y un ResultSetMapping que describe cómo mapear los resultados en entidades.
+Para crear sqls nativas se utiliza el método **EntityManager#createNativeQuery($sql, $resultSetMapping)**.
+
+Como podemos ver, este método requiere de dos argumentos: la propia sql y un ResultSetMapping que describe cómo mapear los resultados en entidades.
 
 Una vez obtenida una instancia de NativeQuery podemos *bindear* parámetros y ejecutarla.
 
@@ -62,7 +64,7 @@ $rsm = new ResultSetMapping;
 $rsm->addEntityResult('User', 'u');
 $rsm->addFieldResult('u', 'id', 'id');
 $rsm->addFieldResult('u', 'name', 'name');
-$rsm->addMetaResult('u', 'address_id', 'address_id');
+$rsm->addMetaResult('u', 'address_id', 'address');
 
 $query = $this->_em->createNativeQuery('SELECT id, name, address_id FROM users WHERE name = ?', $rsm);
 $query->setParameter(1, 'carlos');
