@@ -29,6 +29,10 @@ El siguiente comando nos da una lista de los servicios que tenemos disponibles:
 
 > bin/console debug:autowiring
 
+Se puede ejecutar el comando para buscar algo específico:
+
+> bin/console debug:autowiring cache
+
 Para obtener la lista completa con más detalles, tenemos otro comando:
 
 > bin/console debug:container
@@ -112,6 +116,36 @@ Otro ejemplo: para crear un voter, hay que crear una clase, registrarla como ser
 Con autoconfigure true no es necesario poner tags a los servicos. Symfony las averigua por las interfaces que implementan.
 
 En los ejemplos anteriores, Symfony sabría que el servicio MyTwigExtension es una extensión de Twig porque la clase implementa Twig_ExtensionInterface y que el servico app.post_voter es un voter porque la clase implementa VoterInterface.
+
+### bind
+
+Se puede utilizar la clave **bind** para indicar argumentos concretos por nombre o por tipo:
+
+```yaml
+# config/services.yaml
+services:
+    _defaults:
+        bind:
+            # pass this value to any $adminEmail argument for any service
+            # that's defined in this file (including controller arguments)
+            $adminEmail: 'manager@example.com'
+
+            # pass this service to any $requestLogger argument for any
+            # service that's defined in this file
+            $requestLogger: '@monolog.logger.request'
+
+            # pass this service for any LoggerInterface type-hint for any
+            # service that's defined in this file
+            Psr\Log\LoggerInterface: '@monolog.logger.request'
+
+            # optionally you can define both the name and type of the argument to match
+            string $adminEmail: 'manager@example.com'
+            Psr\Log\LoggerInterface $requestLogger: '@monolog.logger.request'
+
+    # ...
+```
+
+Se puede utilizar de forma genérica en _defaults o en un servicio concreto.
 
 ### resource y exclude
 
@@ -238,3 +272,25 @@ services:
          properties:
              mailer: '@mailer'
 ```
+
+
+
+
+
+
+Nuevo en Symfony 4.1. 
+=====================
+
+Servicios Ocultos
+-----------------
+
+Muchas veces creamos servicios que no están pensados para ser utilizados por los programadores. Si al declarar un servicio, añadimos un punto (.) al inicio del identificador del servicio, symfony lo tratará como "Servicio oculto".
+
+Lo único distinto entre los servicios ocultos y el resto de servicios es que los servicios ocultos no aparecen en el listado del comando
+
+> bin/console debug:container
+
+Aunque se ha creado la opción **--show-hidden** para mostarlos si lo necesitáramos:
+
+> ./bin/console debug:container --show-hidden
+

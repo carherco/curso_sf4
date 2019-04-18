@@ -187,7 +187,7 @@ $serializer = new Serializer(array($normalizer), array($encoder));
 
 ## Handling Serialization Depth
 
-El componente Serializer es capaz de detectar y limitar la profundidad de la serialización. 
+El componente Serializer es capaz de detectar y limitar la profundidad de la serialización.
 
 Vamos a verlo con un ejemplo:
 
@@ -237,7 +237,6 @@ class MyObj
 
 Para que el serializador tenga en cuenta la limitación de profundidad, hay que indicárselo con la clave **enable_max_depth**.
 
-
 ```php
 $result = $serializer->normalize($level1, null, array('enable_max_depth' => true));
 /*
@@ -251,6 +250,26 @@ $result = array(
         ),
 );
 */
+```
+
+A partir de Symfony 4.1 se puede definir una función manejadora de esta situación con el método setMaxDepthHandler():
+
+```php
+$normalizer = new ObjectNormalizer($classMetadataFactory);
+$normalizer->setMaxDepthHandler(function ($foo) {
+    return '/foos/'.$foo->id;
+});
+
+$serializer = new Serializer(array($normalizer));
+$result = $serializer->normalize($level1, null, array(ObjectNormalizer::ENABLE_MAX_DEPTH => true));
+/*
+$result = array[
+    'id' => 1,
+    'child' => [
+        'id' => 2,
+        'child' => '/foos/3',
+    ]
+];
 ```
 
 ## Normalizadores
@@ -332,7 +351,6 @@ Esto se puede gestionar creando grupos de atributos:
 
 Veamos un ejemplo en el que tenemos el siguiente objeto:
 
-
 ```php
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -350,7 +368,6 @@ class Product
 ```
 
 Podemos definir los grupos con anotaciones con XML o con YAML.
-
 
 ```php
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -379,9 +396,7 @@ class Product
 }
 ```
 
-
 Una vez definidos los grupos, podemos elegir uno o más a la hora de serializar:
-
 
 ```php
 use Symfony\Component\Serializer\Serializer;
@@ -430,20 +445,14 @@ $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new Annota
 // $classMetadataFactory = new ClassMetadataFactory(new YamlFileLoader('/path/to/your/definition.yaml'));
 ```
 
-
 Por lo demás, todo muy sencillo e intuitivo.
-
-
 
 NOTA
 Para utilizar el loader *annotation*, debemos tener instalados los packages *doctrine/annotations* y *doctrine/cache*.
 
-
-
 ### Seleccionar atributos específicos
 
 También es posible serializar atributos concretos sin haberlos configurado previamente.
-
 
 ```php
 use Symfony\Component\Serializer\Serializer;
@@ -572,6 +581,34 @@ $normalizer->normalize($kevin);
 
 $anne = $normalizer->denormalize(array('first_name' => 'Anne'), 'Person');
 // Person object with firstName: 'Anne'
+```
+
+A partir de Symfony 4.2, existe una anotación para definir los nombres de las propiedades:
+
+```php
+namespace App\Entity;
+
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
+class Person
+{
+    /** @SerializedName("customer_name") */
+    private $firstName;
+
+    public function __construct(string $firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    // ...
+}
+```
+
+Cuando se serialice esta entidad, la propiedad $firstName será llamada custormer_name en lugar de first_name.
+
+```php
+$serialized = $serializer->serialize(new Person('Jane'));
+// {"customer_name": "Jane"}
 ```
 
 ## ¿Propiedades private o protected?

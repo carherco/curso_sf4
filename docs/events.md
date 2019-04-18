@@ -26,7 +26,6 @@ $dispatcher->dispatch('producto.creado', new Event());
 
 El método *dispatch()* recibe dos argumentos: el nombre del evento y una instacia de *Event* con la información del evento.
 
-
 En el ejemplo, hemos pasado al dispatcher un evento sin ninguna información, pero es muy fácil pasar una instancia de Event con la información que queramos:
 
 ```php
@@ -75,12 +74,27 @@ El segundo parámetro del método dispatch es opcional. Si no se le pasa, el pro
 $dispatcher->dispatch('producto.creado');
 ```
 
+NOTA: En versiones muy recientes de symfony se han intercambiado los argumentos del método dispatch().
+
+```php
+$dispatcher->dispatch($evento, ProductoCreadoEvent::NAME);
+```
+
+Y ahora el nuevo segundo parámetro es el opcional:
+
+```php
+$dispatcher->dispatch($evento);
+```
+
+En este caso, el nombre del evento será ProductoCreadoEvent::class.
+
 Además, el dispather siempre devuelve el objeto pasado como evento:
 
 ```php
 $evento = new ProductoCreadoEvent($producto);
 $producto = $dispatcher->dispatch(ProductoCreadoEvent::NAME, $event)->getProducto();
 ```
+
 ## Creación de un listener
 
 Para crear un listener hay que crear una clase con un método que recibirá la instancia del objeto Event y en el que ejecutaremos la lógica que deseemos que se ejecute al producirse el evento.
@@ -144,6 +158,14 @@ on + "camel-cased event name"
 
 En este caso sería *onKernelException()*.
 
+NOTA: A partir de Symfony 4.1, si no existe un método 
+
+```
+on + "camel-cased event name"
+```
+
+se busca un método que se llame **__invoke()**.
+
 El otro atributo opcional es *priority*, que por defecto vale 0, y controla el orden en el que los listeners serán ejecutados. Cuanto mayor sea el número de *priority*, antes se ejecutará el listener. Pueden ser números positivos y/o negativos.
 
 ## Event Name Introspection
@@ -193,9 +215,9 @@ if ($event->isPropagationStopped()) {
 
 ## Event Subscribers
 
-Otra forma de escuchar un evento es a través de un **event subscriber**. 
+Otra forma de escuchar un evento es a través de un **event subscriber**.
 
-Un *event subscriber* es una clase PHP que es capaz de decirle al dispatcher exactamente a qué eventos quiere suscribirse. 
+Un *event subscriber* es una clase PHP que es capaz de decirle al dispatcher exactamente a qué eventos quiere suscribirse.
 
 Implementa el interfaz **EventSubscriberInterface** que requiere que exista un método estático llamado **getSubscribedEvents()**.
 
@@ -242,7 +264,6 @@ class StoreSubscriber implements EventSubscriberInterface
 Esto es muy similar a un listener, salvo por el hecho de que un subscriber puede decir por sí mismo al dispatcher qué eventos quiere escuchar.
 
 Para registrar un subscriber en el dispatcher no hay que hacer nada especial siempre que tengamos el **autoconfigure** habilitado en nuestro fichero *services.yaml*.
-
 
 El dispatcher registrará al subscriber para cada evento devuelto por el método getSubscribedEvents().
 

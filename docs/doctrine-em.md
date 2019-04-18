@@ -139,6 +139,10 @@ foreach ($iterableResult as $row) {
 
 Hemos conseguido los datos con una única consulta, pero el método iterate() hidrata las entidades incrementalmente (de una en una).
 
+## Actualizaciones masivas / Eliminaciones masivas
+
+https://issuu.com/migueleduardocarmonalugo/docs/manual_doctrine_completo_espanol
+
 ## Change Tracking Policies
 
 El seguimiento de cambios es el proceso de determinar qué ha cambiado en entidades gestionadas desde la última vez que se sincronizan con la base de datos.
@@ -147,7 +151,7 @@ Doctrina ofrece 3 políticas de seguimiento de cambios diferentes, cada uno con 
 
 ## Deferred Implicit
 
-La política *Deferred Implicit* es la política de control de cambios por defecto y la más conveniente. Con esta política, Doctrine detecta los cambios comparando propiedad por propiedad todas las entidades manejadas y también aquellas entidades asociadas a las manejadas. A pesar de ser la política más conveniente, puede tener efectos negativos en el rendimiento si se trata de grandes unidades de trabajo. Cada vez que se invoca EntityManager#flush() se tienen que comprobar todas las entidades gestionadas, por lo que esta operación puede ser bastante costosa.
+La política *Deferred Implicit* es la política de control de cambios por defecto y la más conveniente. Con esta política, Doctrine detecta los cambios comparando propiedad por propiedad todas las entidades manejadas y **también aquellas entidades asociadas a las manejadas**. A pesar de ser la política más conveniente, puede tener efectos negativos en el rendimiento si se trata de grandes unidades de trabajo. Cada vez que se invoca EntityManager#flush() se tienen que comprobar todas las entidades gestionadas, por lo que esta operación puede ser bastante costosa.
 
 ## Deferred Explicit
 
@@ -168,7 +172,7 @@ class User
 
 ## Notify
 
-Esta política asume que las entidades notifican de los cambios en sus propiedades.
+Esta política asume que las entidades notifican de los cambios en sus propiedades. Una entidad con esta política debe implementar la interfaz **Doctrine\Common\NotifyPropertyChanged** que consiste en un método **addPropertyChangedListener()**.
 
 ```php
 use Doctrine\Common\NotifyPropertyChanged,
@@ -191,7 +195,7 @@ class MyEntity implements NotifyPropertyChanged
 }
 ```
 
-En cada método setter, tenemos que noficar a todos nuestros listeners del cambio producido.
+En cada método setter, tenemos que noficar a todos nuestros listeners del cambio producido. Los Listeners implementan **PropertyChangedListener** lo que nos asegura que disponen de un método **propertyChanged()**.
 
 ```php
 // ...
@@ -219,139 +223,5 @@ class MyEntity implements NotifyPropertyChanged
 }
 ```
 
-## Debug
+http://www.inanzzz.com/index.php/post/qc6v/taking-logs-with-notify-change-tracking-policy-when-a-property-value-of-an-entity-is-changed
 
-```php
-$dql = "SELECT u FROM User u";
-$query = $entityManager->createQuery($dql);
-var_dump($query->getSQL());
-
-$qb = $entityManager->createQueryBuilder();
-$qb->select('u')->from('User', 'u');
-var_dump($qb->getDQL());
-```
-
-## Lifecycle Events
-
-En este enlace está la lista completa de eventos: https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.html#lifecycle-events
-
-
-
-## Lifecycle Callbacks
-
-En nuestras entidades podemos definir funciones de callback para los eventos
-
-```php
-/** @Entity @HasLifecycleCallbacks */
-class User
-{
-    // ...
-
-    /**
-     * @Column(type="string", length=255)
-     */
-    public $value;
-
-    /** @Column(name="created_at", type="string", length=255) */
-    private $createdAt;
-
-    /** @PrePersist */
-    public function doStuffOnPrePersist()
-    {
-        $this->createdAt = date('Y-m-d H:i:s');
-    }
-
-    /** @PrePersist */
-    public function doOtherStuffOnPrePersist()
-    {
-        $this->value = 'changed from prePersist callback!';
-    }
-
-    /** @PostPersist */
-    public function doStuffOnPostPersist()
-    {
-        $this->value = 'changed from postPersist callback!';
-    }
-
-    /** @PostLoad */
-    public function doStuffOnPostLoad()
-    {
-        $this->value = 'changed from postLoad callback!';
-    }
-
-    /** @PreUpdate */
-    public function doStuffOnPreUpdate()
-    {
-        $this->value = 'changed from preUpdate callback!';
-    }
-}
-```
-
-Desde la versión 2.4 de Doctrine, las funciones de Callback reciben un argumento con información sobre el evento
-
-```php
-class User
-{
-    /** @PreUpdate */
-    public function doStuffOnPreUpdate(PreUpdateEventArgs $event)
-    {
-        if ($event->hasChangedField('username')) {
-            // Do something when the username is changed.
-        }
-    }
-}
-```
-
-Además de los callbacks en las propias entidades, podemos suscribir Listeners o Subscribers fuera de las entidades.
-
-```php
-use Doctrine\ORM\Events;
-use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-
-class MyEventSubscriber implements EventSubscriber
-{
-    public function getSubscribedEvents()
-    {
-        return array(
-            Events::postUpdate,
-        );
-    }
-
-    public function postUpdate(LifecycleEventArgs $args)
-    {
-        $entity = $args->getObject();
-        $entityManager = $args->getObjectManager();
-
-        // perhaps you only want to act on some "Product" entity
-        if ($entity instanceof Product) {
-            // do something with the Product
-        }
-    }
-```
-
-```php
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-
-class MyEventListener
-{
-    public function preUpdate(LifecycleEventArgs $args)
-    {
-        $entity = $args->getObject();
-        $entityManager = $args->getObjectManager();
-
-        // perhaps you only want to act on some "Product" entity
-        if ($entity instanceof Product) {
-            // do something with the Product
-        }
-    }
-}
-```
-
-### Restricciones en los listeners/suscribers
-
-https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.html#implementing-event-listeners
-
-### Es posible definir Listeners específicos para una entidad
-
-https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.html#implementing-event-listeners

@@ -740,7 +740,7 @@ $em->transactional(function($em) {
 
 Podemos configurar modificaciones en cascada a dos niveles: nivel doctrine o nivel base de datos.
 
-A nivel de doctrine
+### A nivel de doctrine
 
 ```php
 /**
@@ -749,7 +749,18 @@ A nivel de doctrine
 public $phonenumbers;
 ```
 
-A nivel de base de datos en @JoinColumn
+- persist: Propaga en cascada a las entidades asociadas las operaciones persist.
+- remove: Propaga en cascada a las entidades asociadas las operaciones persist.
+- merge: Propaga en cascada a las entidades asociadas las operaciones persist.
+- detach: Propaga en cascada a las entidades asociadas las operaciones persist.
+- refresh: Propaga en cascada a las entidades asociadas las operaciones persist.
+- all: Propaga en cascada a las entidades asociadas todas las operaciones
+
+Por defecto no hay ninguna operación en cascada.
+
+https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/working-with-associations.html#transitive-persistence-cascade-operations
+
+### A nivel de base de datos en @JoinColumn
 
 ```php
 /**

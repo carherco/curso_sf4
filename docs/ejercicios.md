@@ -24,6 +24,86 @@ Crear y configurar un subscriber que lance un AccessDeniedHttpException si se re
 
 NO es necesario programar el servicio TokenValidatorService.
 
+### Solución
+
+Creamos una interfaz para discriminar Controllers que tienen que validar tokens 
+
+```php
+namespace App\Controller;
+
+interface TokenAuthenticatedController
+{
+    // ...
+}
+```
+
+Obligamos a los controladores privados a implementar esa interfaz
+
+```php
+namespace App\Controller;
+
+use App\Controller\TokenAuthenticatedController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class FooController extends AbstractController implements TokenAuthenticatedController
+{
+
+}
+```
+
+Programamos un Subscriber que escuche el evento KernelEvents::CONTROLLER y, si el controlador que se va a ejecutar implementa TokenAuthenticatedController, entonces recogemos el token y lo validamos.
+
+
+```php
+// src/EventSubscriber/TokenSubscriber.php
+namespace App\EventSubscriber;
+
+use App\Controller\TokenAuthenticatedController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+
+class TokenSubscriber implements EventSubscriberInterface
+{
+    private $tokenValidatorService;
+
+    public function __construct(TokenValidatorService $tokenValidatorService)
+    {
+        $this->tokenValidatorService = $tokenValidatorService;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::CONTROLLER => 'onKernelController',
+        ];
+    }
+
+    public function onKernelController(FilterControllerEvent $event)
+    {
+        $controller = $event->getController();
+
+        /*
+         * $controller passed can be either a class or a Closure.
+         * This is not usual in Symfony but it may happen.
+         * If it is a class, it comes in array format
+         */
+        if (!is_array($controller)) {
+            return;
+        }
+
+        if ($controller[0] instanceof TokenAuthenticatedController) {
+            $token = $event->getRequest()->query->get('token');
+            if (!$this->tokenValidatorService->validate($token))) {
+                throw new AccessDeniedHttpException('This action needs a valid token!');
+            }
+        }
+    }
+
+}
+```
+
 ## Listener
 
 ### Enunciado
@@ -31,51 +111,4 @@ NO es necesario programar el servicio TokenValidatorService.
 Igual que el ejercicio anterior pero con un listener en vez de con un subscriber.
 
 NO es necesario programar el servicio TokenValidatorService.
-
-
-
-Ejercicio routing 4.1
----------------------
-
-Se necesita crear una acción para mostrar los artículos de un blog. 
-
-- La acción en concreto mostrará el artículo en concreto en el idioma que venga en la url. Solamente se contemplan los idiomas español (es), inglés (es) y francés (fr).
-- La misma acción devolverá el contenido del artículo en formato html o en formato rss según la extensión indicada en la ruta. El formato por defecto, si no se indica extensión, será html
-- Para compartir por redes sociales, por SEO, para tener rutas amigables, etc, tanto el idioma como el título del artículo estarán incluidos en la ruta:
-
-
-Ejemplos de urls posibles: 
-
-- /articles/es/2010/mi-post
-- /articles/en/2010/my-post.rss
-- /articles/es/2013/mi-otro-post.html
-
-
-
-Ejercicio routing 4.2:
---------------
-
-Crear la ruta correspondiente a esta acción para que redireccione TODAS las URLs acabadas en '/' a la misma URL sin la '/'.
-
-
-```php
-    public function removeTrailingSlash(Request $request, $url)
-    {
-        $pathInfo = $request->getPathInfo();
-        $requestUri = $request->getRequestUri();
-
-        $url_nueva = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
-
-        // 308 (Permanent Redirect) is similar to 301 (Moved Permanently) except
-        // that it does not allow changing the request method (e.g. from POST to GET)
-        return $this->redirect($url_nueva, 308);
-    }
-```
-
-
-Por ejemplo:
-
-- La ruta /user/list/ se redireccionaría a /user/list.
-- La ruta /user/edit/3/ se redireccionaría a /user/edit/3.
-- Las rutas /user/list y /user/edit/3 no se redireccionarían.
 
