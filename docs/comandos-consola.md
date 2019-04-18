@@ -1,20 +1,38 @@
 # Comandos
 
+La lista de todos los comandos disponbles se puede consultar ejecutando 
+
+> bin/console
+
+o bien
+
+> bin/console list
+
+El comando *help* seguido del nombre de un comando, nos proporciona ayuda sobre dicho comando.
+
+> bin/console help list
+
+El último de los comandos genéricos de la consola es about, que nos da información sobre el proyecto actual
+
+> bin/console about
+
 ## Entorno de ejecución
 
 Por defecto, los comandos de consola se ejecutan en el entorno definido en la variable de entorno APP_ENV.
 
-Con los modificadores --env y --no-debug podemos modificar el comportamiento por defecto
+Con los modificadores --env y --no-debug podemos modificar el comportamiento por defecto (esto ha cambiado varias veces en las últimas versiones de symfony)
 
 ```
- bin/console comando
+bin/console comando
 
 
- bin/console comando --env=prod
+bin/console comando --env=prod
 
 
- bin/console comando --env=test --no-debug
- ```
+bin/console comando --env=test --no-debug
+```
+
+https://symfony.com/blog/improvements-to-the-handling-of-env-files-for-all-symfony-versions#bonus-env-no-debug-console-deprecations-removed
 
 ## Comandos de consola personalizados
 
@@ -186,7 +204,6 @@ Esta opción acepta múltiples valores
 
 > demo:args --dir=/src --dir=/templates
 
-
 Se puede combinar VALUE_IS_ARRAY con VALUE_REQUIRED o con VALUE_OPTIONAL:
 
 ```php
@@ -205,7 +222,7 @@ $this
 
 Los argumentos son strings separados por espacios. Se asignar por orden de declaración.
 
-Se pueden definir como las opciones o bien mediante el método **setDefinition()** o bien mediante el método **addArgument()**.
+Se pueden definir como las opciones: o bien mediante el método **setDefinition()** o bien mediante el método **addArgument()**.
 
 La definición adminte hasta tres parámetros: el nombre del argumento, el tipo de argumento y el texto de ayuda sobre el argumento.
 
@@ -509,3 +526,16 @@ public function execute(InputInterface $input, OutputInterface $output)
     $bundleName = $helper->ask($input, $output, $question);
 }
 ```
+
+
+Conviene echar un vistazo a las mejoras introducidas en las nuevas versiones de symfony:
+
+- 4.1:
+  - https://symfony.com/blog/new-in-symfony-4-1-advanced-console-output
+
+- 4.2:
+  - https://symfony.com/blog/new-in-symfony-4-2-console-tables-improvements
+
+- 4.3:
+  - https://symfony.com/blog/new-in-symfony-4-3-iterable-progress-bars
+  - https://symfony.com/blog/new-in-symfony-4-3-console-hyperlinks

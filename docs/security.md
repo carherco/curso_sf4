@@ -424,8 +424,6 @@ public function loginAction(Request $request, AuthenticationUtils $authUtils)
 
 ### JSON login
 
-https://symfony.com/doc/current/security/json_login_setup.html
-
 ```yml
 security:
     # ...
@@ -471,7 +469,9 @@ Cuando se haga un POST a la url /login con el header *Content-Type: application/
 }
 ```
 
-El sistema de seguridad interceptará la respuesta e iniciará el proceso de autenticación.
+El sistema de seguridad interceptará la petición e iniciará el proceso de autenticación.
+
+Symfony realiza la autenticación del usuario según la configuración establecida lanzando un error si el proceso falla. Si la autenticación es correcta, entonces se ejecuta el controlador definido anteriormente.
 
 Si el json tiene una estructura diferente:
 
@@ -502,3 +502,50 @@ security:
                 password_path: security.credentials.password
 ```
 
+https://symfony.com/doc/current/security/json_login_setup.html
+
+
+En las nuevas versiones de Symfony, el servicio de seguridad se llama ahora Security.
+
+```php
+// src/AppBundle/Newsletter/NewsletterManager.php
+
+// ...
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
+
+class NewsletterManager
+{
+    protected $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+    public function sendNewsletter()
+    {
+        if (!$this->security->isGranted('ROLE_NEWSLETTER_ADMIN')) {
+            throw new AccessDeniedException();
+        }
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+## Los comandos make:auth y make:user
+
+En symfony 4.1 han añadido un comando nuevo **make:auth** que nos asiste en la configuración de la seguridad de nuestra aplicación.
+
+Este comando es interactivo: nos va haciendo preguntas y al terminar nos genera el código y configuración necesarios.
+
+> php bin/console make:auth
+
+Previamente, conviene haber creado una entidad User bien manualmente o bien con el también nuevo comando **make:user**.
+
+> php bin/console make:user
+
+Enlace a la documentación oficial: https://symfony.com/doc/current/security/form_login_setup.html

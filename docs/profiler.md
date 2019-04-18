@@ -6,6 +6,27 @@ Para disponer del profiler en nuestra aplicación, si no lo tenemos ya, basta co
 
 Es una dependencia únicamente de desarrollo.
 
+## Secciones del profiler
+
+Las secciones del profiler son:
+
+- Request / Response
+- Performance
+- Validator
+- Forms
+- Exception
+- Logs
+- Events
+- Routing
+- Cache
+- Translation
+- Security
+- Twig
+- Doctrine
+- E-Mails
+- Debug
+- Configuration
+
 ## Cómo crear un Data Collector personalizado
 
 El Profiler de Symfony obtiene la información utilizando unas clases especiales llamadas **data collectors**. Podemos crear nuestros propios data collectors para mostrar información en el Profiler.
@@ -304,3 +325,7 @@ framework:
     profiler:
         dsn: 'file:/tmp/symfony/profiler'
 ```
+
+## Cómo refrescar el profiler con la última petición en aplicaciones SPA
+
+https://symfony.com/blog/new-in-symfony-4-1-self-updating-debug-toolbar

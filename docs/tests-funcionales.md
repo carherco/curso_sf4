@@ -545,3 +545,6 @@ unset($values['task']['tags'][0]);
 
 $crawler = $client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 ```
+
+
+https://symfony.com/blog/new-in-symfony-4-3-domcrawler-improvements

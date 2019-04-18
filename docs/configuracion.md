@@ -97,6 +97,10 @@ Los valores de estos parámetros son considerados strings por defecto. Este comp
 
 https://symfony.com/doc/current/configuration/environment_variables.html#environment-variable-processors
 
+https://symfony.com/blog/new-in-symfony-4-3-url-env-var-processor
+
+https://symfony.com/blog/new-in-symfony-4-3-default-and-trim-env-var-processors
+
 ## Entornos
 
 http://symfony.com/doc/master/configuration/environments.html

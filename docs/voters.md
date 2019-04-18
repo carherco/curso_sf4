@@ -163,3 +163,31 @@ Soporte para ACL
 ----------------
 
 El soporte para ACL ha sido eliminado en Symfony 4.0. Si se quiere trabajar con ACL existe un bundle preparado para ello: https://github.com/symfony/acl-bundle
+
+
+
+En las nuevas versiones de symfony:
+
+allow_if_all_abstain
+--------------------
+
+En caso de que todos los voters se abstengan, el comportamiento por defecto es denegar el acceso al usuario. Se puede configurar este comportamiento con la opción **allow_if_all_abstain**.
+
+```yaml
+security:
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: true
+```
+
+allow_if_equal_granted_denied
+-----------------------------
+
+En la estrategia *consensus*, en caso de empate entre voters que permitan el acceso y voters que denieguen el acceso, por defecto se permite el acceso. Se puede cambiar este comportamiento con la opción **allow_if_equal_granted_denied**
+
+```yaml
+security:
+    access_decision_manager:
+        strategy: consensus
+        allow_if_equal_granted_denied: false
+```
