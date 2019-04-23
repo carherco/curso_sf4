@@ -18,6 +18,7 @@
   - [Rendimiento](./doctrine-performance.md) - Revisar
 
 6 de mayo
+
 - [Servicios](./servicios.md) e [inyección de dependencias](./inyeccion-dependencias.md)
 - [Eventos](./events.md)
 - [El serializador de Symony](./serializer.md)
@@ -28,9 +29,10 @@
 
 - [Seguridad](./security) - Revisar
 - [Voters](./voters.md) - Revisar
-- [Emails]()
+- [Emails](./emails.md)
 - [Logs](./logs.md)
-- [Cache y rendimiento]()
+- [Cache](./cache.md)
+- [Rendimiento](./performance.md)
 
 8 de mayo
 
@@ -40,14 +42,17 @@
   - [Fixtures](./tests-fixtures.md)
   - [Testeo de repositorios](./testing-repositories.md)
   - [Testeo de comandos](./testing-commands.md)
+  - [Testeo de emails](./testing-emails.md)
 
 22 y 23 de mayo
 
-- [Workflows]()
-- [Bundles]()
+- [Workflows](./workflows.md)
+- [Bundles](./bundles.md)
+- [FOSRestBundle](https://symfony.com/doc/master/bundles/FOSRestBundle/index.html)
+- [Api Platform](https://api-platform.com)
+
 
 Fuera de temario:
-- [Creación y consumo de WebServices](./soap.md)
 
 - https://matthiasnoback.nl/2014/07/test-doubles/
 - https://symfony.com/doc/current/testing/database.html

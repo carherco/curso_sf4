@@ -266,7 +266,7 @@ OK, but incomplete or skipped tests!
 Tests: 1, Assertions: 1, Incomplete: 1.
 ```
 
-### Skipped tests
+### Skipped tests
 
 ```php
 use PHPUnit\Framework\TestCase;
@@ -343,7 +343,7 @@ class DatabaseTest extends TestCase
 - @requires extension mysqli
 - @requires extension redis 2.2.0
 
-### Dependencias
+### Dependencias
 
 Se pueden marcar dependencias de unos tests con otros
 
@@ -390,7 +390,7 @@ FAILURES!
 Tests: 1, Assertions: 1, Failures: 1, Skipped: 1.
 ```
 
-### Proveedores de datos
+### Proveedores de datos
 
 ```php
 use PHPUnit\Framework\TestCase;
@@ -499,7 +499,7 @@ class DataTest extends TestCase
  }
 ```
 
-### Testeo de excepciones
+### Testeo de excepciones
 
 ```php
 use PHPUnit\Framework\TestCase;
@@ -513,7 +513,7 @@ class ExceptionTest extends TestCase
 }
 ```
 
-### Testeo con dobles (Stubs, Mocks...)
+### Testeo con dobles (Stubs, Mocks...)
 
 Para crear stubs nos apoyamos en el método createMock() y en los métodos willReturn y will
 

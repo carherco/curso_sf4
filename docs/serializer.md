@@ -614,3 +614,7 @@ $serialized = $serializer->serialize(new Person('Jane'));
 ## ¿Propiedades private o protected?
 
 Si quieres serializar ENTIDADES tienes que declarar las propiedades como *protected*. La razón es porque is serializas una clase que ha sido anteriormente una instancia de un proxy, las variables *private* no serán serializadas y se lanzará un *PHP Notice*.
+
+## Los métodos __sleep() y __wakeup() de PHP
+
+No hay que olvidar la utilidad de los métodos __sleep() y __wakeup() de PHP. Son métodos que se ejecutan al serializar (__sleep()) y deserializar (__wakeup()) una clase que contenga dichos métodos.
