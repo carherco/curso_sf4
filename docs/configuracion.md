@@ -116,12 +116,9 @@ En las subcarpetas dev, prod y test, se definen las configuraciones que difieren
 
 En el fichero *src/Kernel.php* se puede cambiar la localización de estos ficheros.
 
-
-Ejecutar Symfony con un entorno específico
-------------------------------------------
+### Ejecutar Symfony con un entorno específico
 
 Para ejecutar la aplicación en un entorno concreto, basta con cambiar la variable **APP_ENV** del fichero *.env*.
-
 
 ```
 # .env

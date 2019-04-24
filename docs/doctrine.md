@@ -770,6 +770,26 @@ https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/working-
 private $customer;
 ```
 
+## Migrations
+
+En symfony 4, en vez de utilizar directamente los comandos de doctrine  para actualizar la base de datos, se recomiendan utilizar el  comando  de migración del bundle MakerBundle make:migration.
+
+El comando make:migration genera un fichero .sql con las operaciones necesarias para actualizar la base de datos
+
+> php bin/console make:migration
+
+El comando doctrine:migrations:migrate
+
+> php bin/console doctrine:migrations:migrate
+
+El comando doctrine:migrations:migrate ejecuta todos los ficheros de migración que no se hayan ejecutado.
+
+## make:entity --regenerate
+
+El comando make:entity con la opción --regenerate, crea los getters y setters que falten de la entidad indicada.
+
+> php bin/console make:entity --regenerate
+
 ## Extensiones de doctrine
 
 Para ciertas estructuras y comportamientos habituales de tablas, hay desarrolladores que programan extensiones de doctrine.

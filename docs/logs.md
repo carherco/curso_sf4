@@ -433,6 +433,36 @@ monolog:
 
 
 
+## Nuevo en Symfony 4.1: excluded_http_codes
+
+Al manejador fingers_crossed se le puede indicar que ignore los logs sobre códigos de error concretos:
+
+```yml
+# config/packages/monolog.yaml
+monolog:
+    handlers:
+        main:
+            # ...
+            type: 'fingers_crossed'
+            excluded_http_codes: [403, 404]
+```
+
+Se pueden excluir combinaciones de códigos y urls:
+
+```yml
+# config/packages/monolog.yaml
+monolog:
+    handlers:
+        main:
+            # ...
+            excluded_http_codes: [{ 400: ['^/foo', '^/bar'] }, 403, 404]
+```
+
+
+
+
+
+
 
 
 

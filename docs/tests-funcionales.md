@@ -1,5 +1,4 @@
-Tests Funcionales
-=================
+# Tests Funcionales
 
 Los tests funcionales no se diferencian demasiado de los tests unitarios en cuanto a PHPUnit se refiere. La diferencia es que se necesitan un flujo específico de trabajo:
 
@@ -80,8 +79,7 @@ $crawler = $client->submit($form);
 ```
 
 
-Aserciones más utilizadas en tests funcionales
-----------------------------------------------
+## Aserciones más utilizadas en tests funcionales
 
 ```php
 use Symfony\Component\HttpFoundation\Response;
@@ -132,8 +130,7 @@ $this->assertTrue(
 $this->assertTrue($client->getResponse()->isRedirect());
 ```
 
-El Test Client
-==============
+## El Test Client
 
 El objeto **client** simula un cliente HTTP similar a un navegador y permite hacer peticiones y acceder a la respuesta:
 
@@ -266,8 +263,7 @@ Y aunque no es recomendable en tests funcionales, a veces necesitaremos acceder 
 $container = $client->getContainer();
 ```
 
-Accessing the Profiler Data
----------------------------
+### Accessing the Profiler Data
 
 En cada petición, se puede habilitar el profiler de symfony para recoger datos. Por ejemplo, podría servir para testear que una determinada página ejecuta menos de X consultas a la base de datos.
 
@@ -282,8 +278,7 @@ $crawler = $client->request('GET', '/producto');
 $profile = $client->getProfile();
 ```
 
-Redirecciones
--------------
+### Redirecciones
 
 Cuando una petición devuelve una respuesta de tipo redirección, el cliente de test no sigue la redirección automáticamente. Se puede examinar la respuesta y después forzar al cliente a que siga la redirección con el método **followRedirect()**.
 
@@ -303,15 +298,13 @@ Si se le pasa *false* a este método, el cliente dejaría de seguir las redirecc
 $client->followRedirects(false);
 ```
 
-El objeto Crawler
-=================
+## El objeto Crawler
 
 Cada vez que realizamos una petición con el objeto client, nos devuelven una instancia de Crawler.
 
 El crawler nos permite analizar y acceder a los elementos del DOM de la respuesta.
 
-Acceso a elementos del DOM
---------------------------
+### Acceso a elementos del DOM
 
 De forma similar a jQuery, el crawler tiene métodos para acceder a elementos del DOM. 
 
@@ -377,10 +370,7 @@ $crawler
 
 Existe otro método **count()** que no devuelve un crawler sino que devuelve el número de elementos del crawler.
 
-
-
-Extracción de información
--------------------------
+### Extracción de información
 
 ```php
 // devuelve el valor del atributo dado del primer elemento
@@ -399,9 +389,7 @@ $data = $crawler->each(function ($node, $i) {
 });
 ```
 
-
-Enlaces
--------
+### Enlaces
 
 Para seleccionar un enlace, podemos utilizar las funciones de acceso anteriores o un método especial **selectLink()**.
 
@@ -432,10 +420,7 @@ $link = $crawler->selectLink('Click here')->link();
 $client->click($link);
 ```
 
-
-
-Forms
------
+### Forms
 
 La forma de seleccionar un formulario con el crawler es un tanto curiosa.
 
@@ -514,9 +499,7 @@ $form['photo']->upload('/path/to/lucas.jpg');
 
 Por último, el objeto Form tiene un método **getValues()** y un método getFiles() que devuelven los valores de los campos y de los archivos. Los dos métodos tienen una versión que devuelve los valores en formato php: **getPhpValues()** y **getPHPFiles()**.
 
-
-Añadir o quitar elementos a un Form
------------------------------------
+#### Añadir o quitar elementos a un Form
 
 Añadir campos:
 
@@ -546,5 +529,52 @@ unset($values['task']['tags'][0]);
 $crawler = $client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 ```
 
+## Novedades en symfony 4.2
+
+### Nuevo método clickLink()
+
+Han incorporado a la librería un nuevo método que hace más sencillo hacer click en un enlace.
+
+Lo que antes había que hacer así:
+
+```php
+$client->request('GET', '/');
+$link = $crawler->selectLink('Login')->link();
+$crawler = $client->click($link);
+```
+
+Ahora se puede abrebiar así:
+
+```php
+$client->request('GET', '/');
+$crawler = $client->clickLink('Login');
+```
+
+### Nuevo método submitForm()
+
+De igual forma, han incorporado el método submitForm para hacer más sencillo el envío de formularios.
+
+Lo que antes había que hacer así:
+
+```php
+$client->request('GET', '/register');
+$form = $crawler->selectButton('Sign Up')->form();
+$crawler = $client->submit($form, [
+    'name' => 'Jane Doe',
+    'username' => 'jane',
+    'password' => 'my safe password',
+]);
+```
+
+Ahora se puede abrebiar así:
+
+```php
+$client->request('GET', '/register');
+$crawler = $client->submitForm('Sign Up', [
+    'name' => 'Jane Doe',
+    'username' => 'jane',
+    'password' => 'my safe password',
+]);
+```
 
 https://symfony.com/blog/new-in-symfony-4-3-domcrawler-improvements

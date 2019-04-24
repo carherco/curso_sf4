@@ -321,7 +321,6 @@ parameters:
     app.route_prefix: af
 ```
 
-
 Si se usa algún parámetro, puede tener valor por defecto, restricciones, etc.
 
 ## Restricción de rutas por método
@@ -397,13 +396,9 @@ class MainController extends Controller
 
 https://symfony.com/doc/current/security/force_https.html
 
+## Novedades en Symfony 4.1 y 4.2
 
-
-Novedades en Symfony 4.1 y 4.2
-==============================
-
-Importación de rutas con prefijo
---------------------------------
+### Importación de rutas con prefijo
 
 Se ha introducido la opción **name_prefix** para cargar rutas de otro fichero poniéndoles un prefijo:
 
@@ -420,8 +415,7 @@ api:
 
 Esto permite cargar un fichero de rutas varias veces o configurar el prefijo para las rutas de un bundle.
 
-Redirecciones 307 y 308
------------------------
+### Redirecciones 307 y 308
 
 Las redirecciones 301 y 302 transforman las peticiones POST en peticiones GET. Para resolver ese problema, se introdujeron dos nuevos códigos HTTP en el estándar: el 307 y el 308. 
 
@@ -455,8 +449,7 @@ route_308:
         keepRequestMethod: true
 ```
 
-Rutas I18n
-----------
+### Rutas I18n
 
 A partir de 4.1 es posible definir distintos paths para una misma ruta dependiendo el idioma:
 
@@ -488,9 +481,7 @@ class ContactController
 }
 ```
 
-
 La generación de la ruta cogería el locale que se esté utilizando en ese momento, aunque también podemos elegir un locale concreto
-
 
 ```php
 // uses the current request locale
@@ -499,7 +490,6 @@ $url = $urlGenerator->generate('contact');
 // ignores the current request locale and generates '/stuur-ons-een-email'
 $url = $urlGenerator->generate('contact', ['_locale' => 'nl']);
 ```
-
 
 También se pueden utilizar con prefijos:
 

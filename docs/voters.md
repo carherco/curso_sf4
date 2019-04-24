@@ -164,8 +164,6 @@ Soporte para ACL
 
 El soporte para ACL ha sido eliminado en Symfony 4.0. Si se quiere trabajar con ACL existe un bundle preparado para ello: https://github.com/symfony/acl-bundle
 
-
-
 En las nuevas versiones de symfony:
 
 allow_if_all_abstain

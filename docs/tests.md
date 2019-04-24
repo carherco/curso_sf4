@@ -715,3 +715,12 @@ class GoogleTest extends TestCase
 PhpUnit es capaz de generar un informe de la cobertura de código de nuestros tests
 
 > ./vendor/bin/simple-phpunit --coverage-html
+
+
+## Enlaces interesantes
+
+- https://matthiasnoback.nl/2014/07/test-doubles/
+- https://symfony.com/doc/current/testing/database.html
+- https://github.com/Codeception/Codeception/issues/3391
+- https://gianarb.it/blog/symfony-unit-test-controller-with-phpunit
+- https://symfony.com/blog/new-in-symfony-2-8-clock-mocking-and-time-sensitive-tests

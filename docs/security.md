@@ -4,8 +4,7 @@ El sistema de seguridad de symfony es muy potente, pero también puede llegar a 
 
 Para instalar el componente de seguridad con Symfony Flex, en caso de no tenerlo ya instalado, hay que ejecutar
 
->  composer require security
-
+> composer require security
 
 La seguridad se configura en el archivo security.yml. Por defecto, tiene el siguiente aspecto:
 
@@ -549,3 +548,323 @@ Previamente, conviene haber creado una entidad User bien manualmente o bien con 
 > php bin/console make:user
 
 Enlace a la documentación oficial: https://symfony.com/doc/current/security/form_login_setup.html
+
+## Roles
+
+Al hacer login, el usuario recibe un conjunto específico de roles (por ejemplo: ROLE_ADMIN).
+
+Los roles deben empezar con el prefijo *ROLE_*.
+
+Un usuario autenticado debe de tener al menos un rol.
+
+Es posible establecer una jerarquía de roles:
+
+```yml
+security:
+    # ...
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+```
+
+### Los pseudo-roles
+
+Symfony tiene 3 pseudo-roles (atributos), que no son roles, pero actúan como si lo fueran:
+
+- IS_AUTHENTICATED_ANONYMOUSLY: Todos los usuarios tienen este atributo, estén logeados o no
+- IS_AUTHENTICATED_REMEMBERED: Todos los usuarios logeados tienen este atributo
+- IS_AUTHENTICATED_FULLY: Todos los usuarios logeados excepto los que están logeados a través de una "remember me cookie".
+
+## Autorización
+
+El proceso de autorización consiste en añadir código para que un recurso requiera un *atributo* específico (un rol u otro tipo de atributo) para acceder a dicho recurso.
+
+Añadir código para denegar el acceso a un recurso puede hacerse bien mediante la sección *access_control* del security.yml o bien a través del servicio *security.authorization_checker*.
+
+### Access control
+
+En el access control, además de la url, se puede configurar accesos por IP, host name o métodos HTTP.
+
+También se puede utilizar la sección *access_control* para redireccionar al usuario al protocolo *https*
+
+Ejemplos:
+
+```yml
+security:
+    # ...
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN, ip: 127.0.0.1 }
+        - { path: ^/admin, roles: ROLE_ADMIN, host: symfony\.com$ }
+        - { path: ^/admin, roles: ROLE_ADMIN, methods: [POST, PUT] }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+```
+
+Primero Symfony búsca el match correspondiente según las coincidencias de:
+
+- path
+- ip
+- host
+- methods
+
+Una vez vista cuál es la coincidencia, permite o deniega el acceso, según se cumplan las condiciones de:
+  
+- roles: si el usuario no tiene este rol, se le deniega el acceso
+- allow_if: si la expresión evaluada devuelve *false* se le deniega el acceso
+
+```yml
+security:
+    # ...
+    access_control:
+        -
+            path: ^/_internal/secure
+            allow_if: "'127.0.0.1' == request.getClientIp() or has_role('ROLE_ADMIN')"
+```
+
+- requires_channel: si el protocolo (canal) de la petición no coincide con el indicado, se le redirige al indicado.
+
+```yml
+security:
+    # ...
+    access_control:
+        - { path: ^/cart/checkout, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+```
+
+Si el acceso resulta denegado y el usuario no está autenticado, se le redirige al sistema de autenticación cofigurado.
+
+Si el acceso resulta denegado y ya estaba autenticado, se le muestra una página de 403 acceso denegado.
+
+### El servicio Authorization_checker
+
+La forma de añadir código de denegación de acceso a través del servicio *security.authorization_checker* son las siguientes:
+
+A) En los controladores:
+
+```php
+public function helloAction($name)
+{
+    // The second parameter is used to specify on what object the role is tested.
+    $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
+    // Old way :
+    // if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+    //     throw $this->createAccessDeniedException('Unable to access this page!');
+    // }
+
+    // ...
+}
+```
+
+Gracias al bundle SensioFrameworkExtraBundle, se puede hacer lo mismo con anotaciones:
+
+```php
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
+public function helloAction($name)
+{
+    // ...
+}
+```
+
+Incluso se puede poner a nivel de la clase controladora
+
+```php
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ * @Route("/asignaturas")
+ */
+class AsignaturasController extends Controller
+{
+  
+}
+```
+
+B) En las plantillas
+
+```yml
+{% if is_granted('ROLE_ADMIN') %}
+    <a href="...">Delete</a>
+{% endif %}
+```
+
+C) En los servicios
+
+```php
+// src/AppBundle/Newsletter/NewsletterManager.php
+
+// ...
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+class NewsletterManager
+{
+    protected $authorizationChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+    public function sendNewsletter()
+    {
+        if (!$this->authorizationChecker->isGranted('ROLE_NEWSLETTER_ADMIN')) {
+            throw new AccessDeniedException();
+        }
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+## Acceso al objeto User
+
+Tras la autenticación, el objeto User asociado al usuario actual se puede obtener a través del servicio *security.token_storage*.
+
+En un controlador, podemos tener acceso fácilmente al objeto User gracias a la inyección de dependencias.
+
+```php
+use Symfony\Component\Security\Core\User\UserInterface;
+
+public function index(UserInterface $user)
+{
+    //...
+}
+```
+
+De qué tipo de clase sea nuestro objeto *$user* dependerá de nuestro *user provider*.
+
+Si nuestra clase controladora extiende de Controller se puede acceder también al usuario con $this->getUser().
+
+```php
+use Symfony\Component\Security\Core\User\UserInterface;
+
+public function index()
+{
+    $user = $this->getUser();
+
+    //...
+}
+```
+
+En twig, podemos acceder al objeto user con app.user
+
+```twig
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <p>Username: {{ app.user.username }}</p>
+{% endif %}
+```
+
+## Las anotaciones @IsGranted y @Security
+
+Las anotaciones @IsGranted y @Security restringen el acceso a los controladores:
+
+```php
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+class PostController extends Controller
+{
+    /**
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * or use @Security for more flexibility:
+     *
+     * @Security("is_granted('ROLE_ADMIN') and is_granted('ROLE_FRIENDLY_USER')")
+     */
+    public function indexAction()
+    {
+        // ...
+    }
+}
+```
+
+### @IsGranted
+
+La anotación @IsGranted() es muy simple de utilizar. Se utiliza para restringir roles o para restricciones basadas en Voters:
+
+```php
+/**
+ * @Route("/posts/{id}")
+ *
+ * @IsGranted("ROLE_ALUMNO")
+ * @IsGranted("nota_ver", subject="nota")
+ */
+public function verAction(Nota $nota)
+{
+}
+```
+
+Para acceder a una acción hay que pasar todas las restricciones.
+
+La anotación @IsGranted permite también personalizar el statusCode y el mensaje de error.
+
+```php
+/**
+ * Will throw a normal AccessDeniedException:
+ *
+ * @IsGranted("ROLE_ADMIN", message="No access! Get out!")
+ *
+ * Will throw an HttpException with a 404 status code:
+ *
+ * @IsGranted("ROLE_ADMIN", statusCode=404, message="Post not found")
+ */
+public function indexAction(Post $post)
+{
+}
+```
+
+### @Security
+
+La anotación @Security es más flexible que @IsGranted: permite crear expresiones con lógica personalizada:
+
+```php
+/**
+ * @Security("is_granted('ROLE_ALUMNO') and is_granted('ver', nota)")
+ */
+public function verAction(Nota $nota)
+{
+    // ...
+}
+```
+
+Las expresiones pueden utilizar todas las funciones admitidas en la sección access_control del security.yaml, además de la función is_granted().
+
+Las expresiones tienen acceso a las siguientes variables:
+
+- token: El token de seguridad actual;
+- user: El objeto usuario actual;
+- request: La instancia de la request;
+- roles: Los roles del usurio;
+- y todos los atributos de la request.
+
+Se puede lanzar una excepción Symfony\Component\HttpKernel\Exception\HttpException exception en vez de una excepción Symfony\Component\Security\Core\Exception\AccessDeniedException using utilizando el statusCode 404:
+
+```php
+/**
+ * @Security("is_granted('ver', nota)", statusCode=404)
+ */
+public function verAction(Nota $nota)
+{
+}
+```
+
+También se puede personalizar el mensaje de error:
+
+```php
+/**
+ * @Security("is_granted('ver', nota)", statusCode=404, message="Resource not found.")
+ */
+public function verAction(Nota $nota)
+{
+}
+```
+
+Las anotaciones @IsGranted y @Security se pueden utilizar a nivel de clase para proteger todas las acciones de la clase controladora.
+

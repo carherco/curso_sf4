@@ -126,22 +126,10 @@ https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.h
 
 https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/events.html#implementing-event-listeners
 
-
-https://labs.octivi.com/mastering-symfony2-performance-doctrine/
-
-https://ourcodeworld.com/articles/read/2/5-simple-tips-for-boost-the-database-handling-with-symfony2-and-doctrine
+### Enlaces de interés:
 
 https://symfony.com/doc/current/doctrine/lifecycle_callbacks.html
 
 https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#lifecycle-events
 
 https://symfony.com/doc/current/doctrine/event_listeners_subscribers.html
-
-
-https://tideways.com/profiler/blog/5-doctrine-orm-performance-traps-you-should-avoid
-
-https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/improving-performance.html
-
-https://coderwall.com/p/ry1y0a/improve-doctrine-performance-up-to-100-on-your-symfony2-project
-
-https://ocramius.github.io/blog/doctrine-orm-optimization-hydration/

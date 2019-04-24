@@ -23,7 +23,7 @@ Este comando hace uso interno del php -S por lo que tiene modificadores como
 > php bin/console server:start 0.0.0.0:8000
 
 
-## Nueva estructura de directorios
+## Nueva estructura de directorios
 
 ### Directorios
 

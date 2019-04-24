@@ -7,7 +7,6 @@
 - [Flex](./flex.md)
 - [Routing](./routing.md)
 - [Doctrine](./doctrine.md)
-  - [Configuración]() - Revisar
   - [ArrayCollection](./doctrine-array-collection.md)
   - [Repositorios](./doctrine-repositorios.md)
   - [El lenguaje DQL](./doctrine-dql.md)
@@ -15,7 +14,7 @@
   - [Native SQL](./doctrine-nativesql.md)
   - [El Entity Manager](./doctrine-em.md)
   - [Ingeniería inversa](./doctrine-ingenieriainversa.md)
-  - [Rendimiento](./doctrine-performance.md) - Revisar
+  - [Rendimiento](./doctrine-performance.md)
 
 6 de mayo
 
@@ -27,8 +26,8 @@
 
 7 de mayo
 
-- [Seguridad](./security) - Revisar
-- [Voters](./voters.md) - Revisar
+- [Seguridad](./security)
+- [Voters](./voters.md)
 - [Emails](./emails.md)
 - [Logs](./logs.md)
 - [Cache](./cache.md)
@@ -50,16 +49,3 @@
 - [Bundles](./bundles.md)
 - [FOSRestBundle](https://symfony.com/doc/master/bundles/FOSRestBundle/index.html)
 - [Api Platform](https://api-platform.com)
-
-
-Fuera de temario:
-
-- https://matthiasnoback.nl/2014/07/test-doubles/
-- https://symfony.com/doc/current/testing/database.html
-- https://github.com/Codeception/Codeception/issues/3391
-- https://gianarb.it/blog/symfony-unit-test-controller-with-phpunit
-- https://symfony.com/blog/new-in-symfony-2-8-clock-mocking-and-time-sensitive-tests
-
-
-
-
