@@ -185,6 +185,8 @@ $normalizer->setCircularReferenceHandler(function ($object) {
 $serializer = new Serializer(array($normalizer), array($encoder));
 ```
 
+NOTA: Deprecated since version 4.2: The setCircularReferenceHandler() method is deprecated since Symfony 4.2. Use the circular_reference_handler key of the context instead.
+
 ## Handling Serialization Depth
 
 El componente Serializer es capaz de detectar y limitar la profundidad de la serialización.

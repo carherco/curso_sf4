@@ -1,0 +1,28 @@
+App\Entity\Editor:
+    editor{1..10}:
+        username (unique): <username()>
+
+App\Entity\User:
+    user{1..100}:
+        username (unique): <username()>
+        password: 1234
+
+App\Entity\Post:
+    post{1..700}:
+        title: <sentence()>
+        text: <text()>
+        date: <date_create()>
+        author: '@editor*'
+        categories: '<numberBetween(1, 3)>x @category*'
+
+App\Entity\Comment:
+    comment{1..10000}:
+        text: <realText(200)>
+        datetime: <date_create()>
+        author: '@user*'
+        post: '@post*'
+
+App\Entity\Category:
+    category{1..40}:
+        name: <word()>
+        

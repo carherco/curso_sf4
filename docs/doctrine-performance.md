@@ -67,7 +67,7 @@ Pero si utilizamos **lazy loading**, el bucle posterior en twig o en el controla
 En estos casos, debemos recurrir al **eager loading**:
 
 ```php
-$dql = "SELECT c FROM App\Company c";
+$dql = "SELECT c FROM App\Company c WHERE xxxxx";
 $query = $entityManager->createQuery($dql);
 $companies = $query->getResult();
 
@@ -117,7 +117,7 @@ https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/advan
 Se debe evitar esto:
 
 ```php
-$friend = $em->getReference('Octivi\Entity\User', $friendId);
+$friend = $em->getReference('App\Entity\User', $friendId);
 $users = $this->findAll();
 
 foreach ($users as $user) {
@@ -131,7 +131,7 @@ $em->flush();
 Y en su lugar utilizar la sentencia update:
 
 ```php
-$qb->update('Octivi:User', 'u')
+$qb->update('App:User', 'u')
     ->set('u.friend', $friendId)
     ->getQuery()->execute();
 ```
