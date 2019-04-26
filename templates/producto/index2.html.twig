@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+</script>
+
+<script>
+$(function(){
+  $('.show_producto').click(function(){
+    var producto_id = $(this).data('id');
+    
+    var nombre = $('#producto_'+producto_id).data('nombre');
+    var precio = $('#producto_'+producto_id).data('precio');
+    var descripcion = $('#producto_'+producto_id).data('descripcion');
+    
+    $('#detalle_producto_id').html(producto_id);
+    $('#detalle_producto_nombre').html(nombre);
+    $('#detalle_producto_precio').html(precio);
+    $('#detalle_producto_descripcion').html(descripcion);
+  });
+}); 
+</script>
+{% endblock %}
+
+{% block title %}Producto index{% endblock %}
+
+{% block body %}
+    <h1>Producto index</h1>
+
+    {% for mensaje in app.flashes('avisos') %}
+      <div style="color: blue;">{{ mensaje }}</div>
+    {% endfor %}
+    
+    
+    <div id="listado_productos" style="display:block; width:50%; float:left;">
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Id</th>
+                  <th>{{'Nombre'|trans}}</th>
+                  <th>{% trans %}Precio{% endtrans %}</th>
+                  <th>{% trans %}Acciones{% endtrans %}</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for producto in productos %}
+              <tr id="producto_{{ producto.id }}" data-id="{{ producto.id }}" data-nombre="{{ producto.nombre }}" data-precio="{{ producto.precio }}" data-descripcion="{{ producto.descripcion }}">
+                  <td>{{ producto.id }}</td>
+                  <td>{{ producto.nombre }}</td>
+                  <td>{{ producto.precio }}</td>
+                  <td>
+                      <a href="#" class="show_producto" data-id="{{ producto.id }}">show</a>
+                  </td>
+              </tr>
+          {% else %}
+              <tr>
+                  <td colspan="4">no records found</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+      <a href="{{ path('producto_new') }}">Create new</a>
+    </div>
+      
+    <div id="detalle_producto" style="display:block; width:50%; float:left;">
+      <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td id="detalle_producto_id"></td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td id="detalle_producto_nombre"></td>
+            </tr>
+            <tr>
+                <th>Precio</th>
+                <td id="detalle_producto_precio"></td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td id="detalle_producto_descripcion"></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+{% endblock %}

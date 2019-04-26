@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+  
+  <h2>Formulario de edición de un grado:</h2>
+
+  {{ form_start(form) }}
+
+  {{ form_row(form.nombre) }}
+
+  <h3>Asignaturas</h3>
+  <ul class="asignaturas" data-prototype="{{ form_widget(form.asignaturas.vars.prototype)|e('html_attr') }}">
+      {% for asignatura in form.asignaturas %}
+          <li style="margin-bottom: 30px;">
+            {{ form_row(asignatura.codigo) }}
+            {{ form_row(asignatura.nombre) }}
+            {{ form_row(asignatura.nombreIngles) }}
+            {{ form_row(asignatura.credects) }}
+          </li>
+      {% endfor %}
+  </ul>
+  
+  <button type="submit">Guardar</button>
+
+  {{ form_end(form) }}
+    
+{% endblock %}
+
+
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+var $collectionHolder;
+
+var $addAsignaturaLink = $('<a href="#" class="add_asignatura_link">Añadir asignatura</a>');
+var $newLinkLi = $('<li></li>').append($addAsignaturaLink);
+
+jQuery(document).ready(function() {
+
+    $collectionHolder = $('ul.asignaturas');
+    $collectionHolder.append($newLinkLi);
+
+    $collectionHolder.data('index', $collectionHolder.find('li').length);
+
+    $addAsignaturaLink.on('click', function(e) {
+      
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addAsignaturaForm($collectionHolder, $newLinkLi);
+    });
+});
+
+
+function addAsignaturaForm($collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = $collectionHolder.data('prototype');
+
+    // get the new index
+    var index = $collectionHolder.data('index');
+
+    var newForm = prototype;
+    // You need this only if you didn't set 'label' => false in your tags field in TaskType
+    // Replace '__name__label__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    // newForm = newForm.replace(/__name__label__/g, index);
+
+    // Replace '__name__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    newForm = newForm.replace(/__name__/g, index);
+
+    // increase the index with one for the next item
+    $collectionHolder.data('index', index + 1);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    var $newFormLi = $('<li></li>').append(newForm);
+    $newLinkLi.before($newFormLi);
+}
+</script>
+{% endblock %}

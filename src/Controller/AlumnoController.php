@@ -25,10 +25,8 @@ class AlumnoController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($alumno);
-        
-        $alumno->setNombre('Carlos');
-        $em->detach($alumno);
-        
+        $alumno->setNombre('Pedro');
+        //$em->detach($alumno); 
         $em->flush();
 
         dump($alumno);

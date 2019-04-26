@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+
+
+{% block body %}
+  
+  <h1>Extensiones de Twig</h1>
+
+  <p>El precio total de su compra es {{ total|priceEuros }}</p>
+  <p>El precio total de su compra es {{ total|priceDolares(2,',','.') }}</p>
+
+{% endblock %}
