@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Alumno;
+use App\Entity\Asignatura;
 use App\Form\AlumnoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,53 @@ use Symfony\Component\Routing\Annotation\Route;
 class AlumnoController extends AbstractController
 {
     /**
-     * @Route("/cambiarnombre", name="alumno_cambiarnombre", methods="GET")
+     * @Route("/inversedside", name="alumno_inversedside", methods="GET")
      */
-    public function cambiarnombregrado(): Response
+    public function inversedside(): Response
+    {
+        $alumno = $this->getDoctrine()
+            ->getRepository(Alumno::class)
+            ->find(1);
+
+        $asignatura = $this->getDoctrine()
+            ->getRepository(Asignatura::class)
+            ->find(3);
+
+        $alumno->addAsignatura($asignatura);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($alumno);
+        $em->flush();
+
+        return $this->redirectToRoute('alumno_index');
+    }
+
+    /**
+     * @Route("/ownerside", name="alumno_ownerside", methods="GET")
+     */
+    public function ownerside(): Response
+    {
+        $alumno = $this->getDoctrine()
+            ->getRepository(Alumno::class)
+            ->find(1);
+
+        $asignatura = $this->getDoctrine()
+            ->getRepository(Asignatura::class)
+            ->find(3);
+
+        $asignatura->addAlumno($alumno);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($asignatura);
+        $em->flush();
+
+        return $this->redirectToRoute('alumno_index');
+    }
+
+    /**
+     * @Route("/persist", name="alumno_persist", methods="GET")
+     */
+    public function persist(): Response
     {
         $alumno = $this->getDoctrine()
             ->getRepository(Alumno::class)

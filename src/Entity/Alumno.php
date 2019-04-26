@@ -208,10 +208,10 @@ class Alumno
 
     public function addAsignatura(Asignatura $asignatura): self
     {
-        //if (!$this->asignatura->contains($asignatura)) {
-            $this->asignatura[] = $asignatura;
-            $asignatura->addAlumno($this);
-        //}
+        // if (!$this->asignatura->contains($asignatura)) {
+             $this->asignatura[] = $asignatura;
+        //     $asignatura->addAlumno($this);
+        // }
 
         return $this;
     }
