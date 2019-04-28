@@ -26,7 +26,7 @@ y en la vista
 
 Este código realizará una nueva SELECT por cada autor de cada artículo.
 
-En su lugar, hay que pedir a Doctrine que hidrate ambas entidades declarándolas en el apartado SELECT
+En su lugar, se puede pedir a Doctrine que hidrate ambas entidades declarándolas en el apartado SELECT
 
 ```php
 $qb = $em->createQueryBuilder('qb1');
@@ -54,9 +54,9 @@ $scalarResults = $qb->getQuery()->getScalarResult();
 
 ## Conflicto entre los dos consejos anteriores
 
-En asociaciones N-1 y 1-1 la hidratación, aún siendo un proceso que consume bastante tiempo y memoria es bastante eficiente.
+En asociaciones N-1 y 1-1 la hidratación, aún siendo un proceso que consume bastante tiempo y memoria, es bastante eficiente.
 
-En asociaciones N-N y 1-N la hidratación no es eficiente si incluímos las dos partes del Join en el Select para que doctrine realizce una única consulta y tengamos las entidades relacionadas también hidratadas. 
+En asociaciones N-N y 1-N la hidratación no es eficiente cuando incluímos las dos partes del Join en el Select para que doctrine realice una única consulta y tengamos las entidades relacionadas también hidratadas.
 
 > SELECT c, e FROM App\Entity\Company c JOIN company.emplyoees e
 
@@ -111,6 +111,25 @@ $em->flush();
 ```
 
 https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/advanced-configuration.html#reference-proxies
+
+## Iterar sobre gran cantidad de objetos
+
+En el caso de un select con muchos resultados, SIN join, y SIN intención de ejecutar UPDATES ni DELETES, podemos utilizar la herramienta **iterator()** para evitar problemas de memoria.
+
+```php
+$q = $this->_em->createQuery('select u from User u');
+$iterableResult = $q->iterate();
+foreach ($iterableResult as $row) {
+    // do stuff with the data in the row, $row[0] is always the object
+
+    // detach from Doctrine, so that it can be Garbage-Collected immediately
+    $this->_em->detach($row[0]);
+}
+```
+
+Hemos conseguido los datos con una única consulta, pero el método iterate() hidrata las entidades incrementalmente (de una en una).
+
+La hidratación incremental mete a la entidad automáticamente en la gestión del entity manager, por lo que hay que hacer detach de las entidades si no queremos sobrecargarlo.
 
 ## Utilizar la sentencia Update para actualizaciones masivas
 
@@ -189,7 +208,7 @@ function getUserAge($id) {
   $repo = $em->getRepository('App:Users');
   $age = $repo->createQuery(
       'SELECT z.age'.
-      'FROM ourcodeworldBundle:Users z'.
+      'FROM App:Users z'.
       'WHERE z.id = :id'
   )
   ->setParameter('id',2)

@@ -1,7 +1,6 @@
 # Doctrine Collections
 
-
-Doctrine Collections es una librería que contiene clases para trabajar con arrays de datos. 
+Doctrine Collections es una librería que contiene clases para trabajar con arrays de datos.
 
 ```php
 <?php
@@ -17,7 +16,7 @@ $filteredCollection = $collection->filter(function($count) {
 
 Esta librería proporciona un interfaz llamado **Doctrine\Common\Collections\Collection** que replica la naturaleza de los arrays de PHP.
 
-Las colecciones son esencialmente mapas ordenado que también pueden ser utilizados como listas.
+Las colecciones son esencialmente mapas ordenados que también pueden ser utilizados como listas.
 
 Tiene un iterador interno *getIterator()*, pero también pueden ser iterados por iteradores externos, como *foreach*.
 
@@ -99,7 +98,7 @@ $filteredCollection = $collection->filter(function($count) {
 
 - first
 
-Sitúa iterador interno en la primera posición y devuelve el elemento de dicha posición.
+Sitúa el iterador interno en la primera posición y devuelve el elemento de dicha posición.
 
 ```php
 $collection = new Collection(['first', 'second', 'third']);
@@ -198,9 +197,9 @@ $last = $collection->last(); // 3
 
 - map
 
-Aplica la función indicada a cada elemento de la colección y devuelve una vueva colección con los elementos devueltos por la función indicada.
+Aplica la función indicada a cada elemento de la colección y devuelve una nueva colección con los elementos devueltos por la función indicada.
 
-```php 
+```php
 $collection = new ArrayCollection([1, 2, 3]);
 
 $mappedCollection = $collection->map(function($value) {
@@ -225,7 +224,7 @@ Parte la colección en dos colecciónes según la condición indicada. Las clave
 ```php
 $collection = new ArrayCollection([1, 2, 3]);
 
-$mappedCollection = $collection->partition(function($key, $value) {
+$mappedCollections = $collection->partition(function($key, $value) {
     return $value > 1
 }); // [[2, 3], [1]]
 ```

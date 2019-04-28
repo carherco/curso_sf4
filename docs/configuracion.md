@@ -40,12 +40,11 @@ Para conocer las opciones de configuración de un Bundle tenemos dos opciones:
 
 > php bin/console config:dump-reference framework
 
-
 ## Entornos y variables de entorno
 
 ### Las variables de entorno y el fichero .env
 
-- En versión 4.0: 
+- En versión 4.0:
 
 En el directorio raíz hay un fichero .env en el que se definen vabiables dependientes del entorno y/o del servidor: desarrollo, producción, test, etc.
 
@@ -101,7 +100,7 @@ https://symfony.com/blog/new-in-symfony-4-3-url-env-var-processor
 
 https://symfony.com/blog/new-in-symfony-4-3-default-and-trim-env-var-processors
 
-## Entornos
+## Entornos
 
 http://symfony.com/doc/master/configuration/environments.html
 
@@ -112,7 +111,6 @@ En las subcarpetas dev, prod y test, se definen las configuraciones que difieren
 - Para el entorno *dev*: config/packages/dev/
 - Para el entorno *prod*: config/packages/prod/
 - Para el entorno *test*: config/packages/test/
-
 
 En el fichero *src/Kernel.php* se puede cambiar la localización de estos ficheros.
 

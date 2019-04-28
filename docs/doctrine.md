@@ -685,7 +685,7 @@ Al asignar las asociaciones bidireccionales, es importante entender el concepto 
 - Una relación unidireccional solamente tiene *owning side*.
 - Doctrine solamente comprueba si ha habido cambios en la entidad *owning side*.
 
-Las siguientes reglas se aplican a bidireccionales asociaciones:
+Las siguientes reglas se aplican a asociaciones bidireccionales:
 
 - El *inverse side* tiene que tener el atributo mappedBy en las OneToOne, OneToMany o ManyToMany.
 - El *owning side* tiene que tener el atributo inversedBy en las OneToOne, ManyToOne o ManyToMany.

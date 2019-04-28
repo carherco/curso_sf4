@@ -59,6 +59,20 @@ El método **clear()** equivale a hacer un detach() de todas las entidades.
 $em->clear();
 ```
 
+## Refresh
+
+Refreshes the persistent state of an entity from the database, overriding any local changes that have not yet been persisted.
+
+## Merge
+
+Merge se utiliza para coger una entidad que ha sido "detached" y hacerle "reattach".
+
+Si la entidad nunca había sido manejada por el Entity Manager, entonces merge es equivalente a persist.
+
+Si la entidad había sido "detached" o serializada (puesta en la caché, quizás), merge más o menos lo que hace es buscar el id de la entidad en el data store y empezar a trackear cualquier cambio en dicha entidad desde ese punto.
+
+https://gist.github.com/sentenza/739205fb70511372e260cef943df7530
+
 ## Unit of work
 
 El coste de una operación flush depende de dos factores:
@@ -139,9 +153,42 @@ foreach ($iterableResult as $row) {
 
 Hemos conseguido los datos con una única consulta, pero el método iterate() hidrata las entidades incrementalmente (de una en una).
 
+La hidratación incremental mete a la entidad automáticamente en la gestión del entity manager, por lo que hay que hacer detach de las entidades si no queremos sobrecargarlo.
+
 ## Actualizaciones masivas / Eliminaciones masivas
 
-https://issuu.com/migueleduardocarmonalugo/docs/manual_doctrine_completo_espanol
+Para las actualizaciones/eliminaciones masivas se aconseja utilizar DQL:
+
+```php
+$qb->update('App:User', 'u')
+    ->set('u.active', 1)
+    ->getQuery()->execute();
+```
+
+De esta forma se ejecuta una única SQL UPDATE en lugar de ejecutarse una sentencia SELECT y N sentencias UPDATE.
+
+O si necesitamos las entidades porque necesitamos ejecutar algún método o por alguna otra razón, se puede recurrir de nuevo a iterate().
+
+```php
+$batchSize = 20;
+$q = $this->_em->createQuery('select u from User u');
+$iterableResult = $q->iterate();
+foreach ($iterableResult as $row) {
+    $user = new CmsUser;
+    $user->increaseCredit();
+    $user->calculateNewBonuses();
+    if (($i % $batchSize) === 0) {
+        $em->flush();
+        $em->clear();
+    }
+}
+$em->flush();
+$em->clear();
+```
+
+Recordatorio: iterate() no sirve si hay JOIN.
+
+https://issuu.com/migueleduardocarmonalugo/docs/manual_doctrine_completo_espanol (sección 1.12)
 
 ## Change Tracking Policies
 
@@ -224,4 +271,3 @@ class MyEntity implements NotifyPropertyChanged
 ```
 
 http://www.inanzzz.com/index.php/post/qc6v/taking-logs-with-notify-change-tracking-policy-when-a-property-value-of-an-entity-is-changed
-

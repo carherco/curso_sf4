@@ -91,6 +91,8 @@ class MainController extends Controller
     }
 ```
 
+Sin hacer nada más, symfony aplicará automáticamente el idioma correspondiente.
+
 Desde la versión 4.1, se admite esta sintaxis
 
 ```php
@@ -102,10 +104,6 @@ public function list($page)
     // ...
 }
 ```
-
-
-
-Sin hacer nada más, symfony aplicará automáticamente el idioma correspondiente.
 
 ## Parámetros extra
 
@@ -161,7 +159,7 @@ class ArticleController extends Controller
 }
 ```
 
-## Localized Routing (i18n)
+## Localized Routing (i18n)
 
 ```php
 /**
@@ -197,7 +195,7 @@ controllers:
         nl: '/nl'
 ```
 
-## Redirecciones
+## Redirecciones
 
 ### Redireccionar a otra url
 

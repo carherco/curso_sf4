@@ -42,7 +42,7 @@ $qb->select('u')
    ->from('User', 'u')
    ->where('u.id = :identifier')
    ->orderBy('u.name', 'ASC')
-   ->setParameter('identifier', 100); 
+   ->setParameter('identifier', 100);
 ```
 
 Existe un método para establecer varios parámetros de una sola vez:

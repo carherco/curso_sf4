@@ -1,5 +1,4 @@
-Ejecutar sentencias SQL directamente
-====================================
+# Ejecutar sentencias SQL directamente
 
 En caso de encontrarnos alguna SQL que no sepamos realizar con DQL, podemos recurrir a realizarla con SQL.
 

@@ -116,7 +116,7 @@ $query->setParameters(array(
 $users = $query->getResult();
 ```
 
-Es importante usar parametrizar las consultas:
+Es importante parametrizar las consultas:
 
 - Protege contra SQL INJECTION
 - Crea *Prepared Statements* que se pueden reutilizar mejorando así el rendimiento
