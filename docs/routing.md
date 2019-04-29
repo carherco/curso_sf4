@@ -105,7 +105,7 @@ public function list($page)
 }
 ```
 
-## Parámetros extra
+## Parámetros extra
 
 Es posible pasar parámetros extra en la ruta a través de la opción *defaults*:
 

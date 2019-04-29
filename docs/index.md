@@ -3,7 +3,7 @@
 29 y 30 de abril:
 
 - [Instalación de Symfony](./instalacion.md)
-- [Configuración](./configuracion)
+- [Configuración](./configuracion.md)
 - [Flex](./flex.md)
 - [Routing](./routing.md)
 - [Doctrine](./doctrine.md)

@@ -26,7 +26,7 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string")
      */
     private $roles = [];
 
@@ -41,6 +41,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $comments;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Payment", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $payment;
 
     public function __construct()
     {
@@ -153,5 +158,22 @@ class User implements UserInterface
 
     public function __toString() {
         return $this->getUsername();
+    }
+
+    public function getPayment(): ?Payment
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(Payment $payment): self
+    {
+        $this->payment = $payment;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $payment->getUser()) {
+            $payment->setUser($this);
+        }
+
+        return $this;
     }
 }

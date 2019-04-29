@@ -105,31 +105,48 @@ $em2 = $doctrine->getManager('other_connection');
 Configurar varias conexiones es muy sencillo:
 
 ```yml
-# app/config/config.yml
+# config/packages/doctrine.yaml
 doctrine:
     dbal:
-        default_connection:   default
+        default_connection: default
         connections:
-            # A collection of different named connections (e.g. default, conn2, etc)
             default:
-                dbname:               bd1
-                host:                 10.0.1.6
-                port:                 ~
-                user:                 root
-                password:             ~
-                charset:              ~
-                path:                 ~
-                memory:               ~
-            other_connection:
-                dbname:               bd2
-                host:                 10.0.1.7
-                port:                 ~
-                user:                 root
-                password:             ~
-                charset:              ~
-                path:                 ~
-                memory:               ~
+                # configure these for your database server
+                url: '%env(DATABASE_URL)%'
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+                charset: utf8mb4
+            customer:
+                # configure these for your database server
+                url: '%env(DATABASE_CUSTOMER_URL)%'
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+                charset: utf8mb4
+
+    orm:
+        default_entity_manager: default
+        entity_managers:
+            default:
+                connection: default
+                mappings:
+                    Main:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Main'
+                        prefix: 'App\Entity\Main'
+                        alias: Main
+            customer:
+                connection: customer
+                mappings:
+                    Customer:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Customer'
+                        prefix: 'App\Entity\Customer'
+                        alias: Customer
 ```
+
+https://symfony.com/doc/current/doctrine/multiple_entity_managers.html
 
 ### Recuperar objetos de la base de datos (SELECT)
 
@@ -735,6 +752,8 @@ $em->transactional(function($em) {
     $em->persist($user);
 });
 ```
+
+https://www.doctrine-project.org/2009/08/22/transactions-and-performance.html
 
 ## Cascade
 

@@ -33,7 +33,7 @@ class AlumnoController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($alumno);
         $em->flush();
-
+return null;
         return $this->redirectToRoute('alumno_index');
     }
 
@@ -55,7 +55,7 @@ class AlumnoController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($asignatura);
         $em->flush();
-
+        return null;
         return $this->redirectToRoute('alumno_index');
     }
 
@@ -75,6 +75,26 @@ class AlumnoController extends AbstractController
         $em->flush();
 
         dump($alumno);
+        return $this->render('alumno/index.html.twig', ['alumnos' => $alumnos]);
+    }
+
+    /**
+     * @Route("/autocommitfalse", name="alumno_autocommitfalse", methods="GET")
+     */
+    public function autocommitfalse(): Response
+    {
+        $alumno = $this->getDoctrine()
+            ->getRepository(Alumno::class)
+            ->find(1);
+
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+        $connection->setAutoCommit(false);
+
+        $alumno->setNombre('Pedro');
+        $em->persist($alumno);
+        $em->flush();
+
         return $this->render('alumno/index.html.twig', ['alumnos' => $alumnos]);
     }
 

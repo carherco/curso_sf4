@@ -164,9 +164,9 @@ class Asignatura
 
     public function addAlumno(Alumno $alumno): self
     {
-        // if (!$this->alumno->contains($alumno)) {
+        if (!$this->alumno->contains($alumno)) {
              $this->alumno[] = $alumno;
-        // }
+        }
 
         return $this;
     }

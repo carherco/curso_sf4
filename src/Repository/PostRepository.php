@@ -48,14 +48,14 @@ class PostRepository extends ServiceEntityRepository
                 JOIN p.author e
             ');
         
-        $query2 = $this->getEntityManager()
+        $query3 = $this->getEntityManager()
             ->createQuery('
                 SELECT PARTIAL p.{id}, cat
                 FROM App:Post p
                 JOIN p.categories cat
             ');
 
-        $query3 = $this->getEntityManager()
+        $query2 = $this->getEntityManager()
             ->createQuery('
                 SELECT PARTIAL p.{id}, com, u
                 FROM App:Post p
