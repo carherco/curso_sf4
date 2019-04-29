@@ -309,10 +309,10 @@ $criteria->where($expr);
 $matched = $collection->matching($criteria); // ['jwage']
 ```
 
-### Expressions
+### Expressions
 
 https://www.doctrine-project.org/projects/doctrine-collections/en/latest/expressions.html
 
-### Expression Builder
+### Expression Builder
 
 https://www.doctrine-project.org/projects/doctrine-collections/en/latest/expression-builder.html#expression-builder
