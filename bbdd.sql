@@ -39,8 +39,8 @@ CREATE TABLE `alumno` (
 INSERT INTO `alumno` (`id`, `n_expediente`, `nombre`, `apellidos`, `fecha_nacimiento`, `sexo`, `email`, `telefono`, `grado_id`) VALUES
 (1, 13472, 'Carlos ', 'Herrera Conejero', '2017-10-10', 0, 'carherco@gmail.com', '197687432', 1),
 (4, 13483, 'Carmen', 'Hernández Colomina', '2007-10-10', 0, 'carherco+2@gmail.com', '545758758768', 2),
-(9, 25434, 'afdsd', 'asdf', NULL, 0, 'carh4erco@gmail.com', '600735405', NULL),
-(13, 876566, 'hgdfsd', 'sf', NULL, 0, 'carher4c3o@gmail.com', NULL, NULL);
+(9, 25434, 'afdsd', 'asdf', NULL, 0, 'carh4erco@gmail.com', '600735405', 1),
+(13, 876566, 'hgdfsd', 'sf', NULL, 0, 'carher4c3o@gmail.com', NULL, 2);
 
 -- --------------------------------------------------------
 
