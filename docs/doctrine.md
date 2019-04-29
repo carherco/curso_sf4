@@ -254,7 +254,7 @@ class Grado
 }
 ```
 
-La asociación many-to-one es obligatoria, pero la one-to-may es opcional.
+La asociación many-to-one es obligatoria, pero la one-to-many es opcional.
 
 El código en el constructor es importante. En lugar de ser instanciado como un array tradicional, la propiedad $asignaturas debe ser de un tipo que implemente la interface *DoctrineCollection*. El objeto ArrayCollection es de este tipo.
 

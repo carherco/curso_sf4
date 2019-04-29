@@ -38,7 +38,7 @@ El método flush() provoca la sincronización con la bbdd de las entidades que e
 $em->flush();
 ```
 
-En caso de UPDATES, el Entity Manager sabe qué propiedades de cada entidad han sido modificadas. Únicamente se ejecutarán sentencias UPDATE de las entidades modificadas y solamente de las propiedades modificadas.
+En caso de operaciones de UPDATE, el Entity Manager sabe qué propiedades de cada entidad han sido modificadas. Únicamente se ejecutarán sentencias UPDATE de las entidades modificadas y solamente de las propiedades modificadas.
 
 ## Remove
 
@@ -61,7 +61,7 @@ $em->clear();
 
 ## Refresh
 
-Refreshes the persistent state of an entity from the database, overriding any local changes that have not yet been persisted.
+Refresca el "estado persistente" de una entidad (el que hay en la base de datos) anulando los cambios que todavía no se hubieran persistido.
 
 ## Merge
 
