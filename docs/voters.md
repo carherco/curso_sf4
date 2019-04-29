@@ -189,3 +189,18 @@ security:
         strategy: consensus
         allow_if_equal_granted_denied: false
 ```
+
+Voters del core de seguridad
+----------------------------
+
+- AuthenticatedVoter
+
+Este voter soporta los atributos IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED, e IS_AUTHENTICATED_ANONYMOUSLY y da acceso basándose en el nivel actual de autenticación.
+
+- RoleVoter
+
+Este voter soporta los atributos que empiezen con ROLE_ y da acceso al usuario si dicho atributo se encuentra en el array de roles devuelto por el método getRoles() del token.
+
+- RoleHierarchyVoter
+
+Este voter extiende de RoleVoter y sabe como manejar la jerarquía de roles.
