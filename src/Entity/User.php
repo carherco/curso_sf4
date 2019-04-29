@@ -42,11 +42,6 @@ class User implements UserInterface
      */
     private $comments;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Payment", mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $payment;
-
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -160,20 +155,4 @@ class User implements UserInterface
         return $this->getUsername();
     }
 
-    public function getPayment(): ?Payment
-    {
-        return $this->payment;
-    }
-
-    public function setPayment(Payment $payment): self
-    {
-        $this->payment = $payment;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $payment->getUser()) {
-            $payment->setUser($this);
-        }
-
-        return $this;
-    }
 }
