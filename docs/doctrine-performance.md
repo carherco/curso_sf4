@@ -279,6 +279,8 @@ Con la primera consulta, se hidratan los usuarios y los socialAccounts. Con la s
 
 https://github.com/Ocramius/Doctrine2StepHydration
 
+Hay un bug sobre esto: https://github.com/doctrine/orm/issues/6808
+
 ## Listeners vs. Subscribers
 
 Una diferencia importante entre listeners y subscribers es que Symfony carga de forma lazy los listeners de entidades. Esto significa que las clases listener solamente se cogen del *service container* y se instancian si el evento relacionado ha sido disparado.

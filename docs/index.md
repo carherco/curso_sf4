@@ -26,7 +26,7 @@
 
 7 de mayo
 
-- [Seguridad](./security)
+- [Seguridad](./security.md)
 - [Voters](./voters.md)
 - [Emails](./emails.md)
 - [Logs](./logs.md)
