@@ -39,3 +39,8 @@ services:
                 # optional priority
                 # priority: 300
         public: false
+
+    App\Listener\MieventoListener:
+        tags:
+            - { name: kernel.event_listener, event: mievento }
+ 

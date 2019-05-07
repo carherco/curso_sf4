@@ -59,7 +59,7 @@ class BlogController extends AbstractController
             }
             $output['posts'][] = $post_data;
         }
-        
+return null;
         return $this->json($output);
     }
 
@@ -99,7 +99,7 @@ class BlogController extends AbstractController
             }
             $output['posts'][] = $post_data;
         }
-        
+        return null;
         return $this->json($output);
     }
 
@@ -145,7 +145,7 @@ class BlogController extends AbstractController
             }
             $output['editors'][] = $editor_data;
         }
-        
+        return null;
         return $this->json($output);
     }
 
@@ -191,7 +191,7 @@ class BlogController extends AbstractController
             }
             $output['editors'][] = $editor_data;
         }
-        
+        return null;
         return $this->json($output);
     }
 
@@ -231,7 +231,7 @@ class BlogController extends AbstractController
             }
             $output['posts'][] = $post_data;
         }
-        
+        return null;
         return $this->json($output);
     }
 

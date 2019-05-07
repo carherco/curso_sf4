@@ -26,10 +26,10 @@ class PostRepository extends ServiceEntityRepository
             ->createQuery(
             'SELECT p, e, cat, com, u 
             FROM App:Post p
-            JOIN p.author e
-            JOIN p.categories cat
-            JOIN p.comments com
-            JOIN com.author u '
+            LEFT JOIN p.author e
+            LEFT JOIN p.categories cat
+            LEFT JOIN p.comments com
+            LEFT JOIN com.author u '
         );
 
         try {
@@ -45,22 +45,22 @@ class PostRepository extends ServiceEntityRepository
             ->createQuery('
                 SELECT p, e 
                 FROM App:Post p
-                JOIN p.author e
+                LEFT JOIN p.author e
             ');
         
         $query3 = $this->getEntityManager()
             ->createQuery('
                 SELECT PARTIAL p.{id}, cat
                 FROM App:Post p
-                JOIN p.categories cat
+                LEFT JOIN p.categories cat
             ');
 
         $query2 = $this->getEntityManager()
             ->createQuery('
                 SELECT PARTIAL p.{id}, com, u
                 FROM App:Post p
-                JOIN p.comments com
-                JOIN com.author u
+                LEFT JOIN p.comments com
+                LEFT JOIN com.author u
             ');
 
         // Y probar con fetch="EAGER" en com.author

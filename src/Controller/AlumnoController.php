@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @Route("/alumno")
@@ -101,12 +103,15 @@ return null;
     /**
      * @Route("/", name="alumno_index", methods="GET")
      */
-    public function index(): Response
+    public function index(EventDispatcherInterface $dispatcher): Response
     {
         $alumnos = $this->getDoctrine()
             ->getRepository(Alumno::class)
             ->findAll();
 
+            
+        $dispatcher->dispatch('mievento', new Event());
+        
         return $this->render('alumno/index.html.twig', ['alumnos' => $alumnos]);
     }
 

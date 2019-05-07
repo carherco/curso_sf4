@@ -85,7 +85,7 @@ class Alumno
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Asignatura", mappedBy="alumno", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Asignatura", mappedBy="alumno", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
     private $asignatura;
 
@@ -209,8 +209,8 @@ class Alumno
     public function addAsignatura(Asignatura $asignatura): self
     {
         if (!$this->asignatura->contains($asignatura)) {
-            $this->asignatura[] = $asignatura;
-            // $asignatura->addAlumno($this);
+            $this->asignatura->add($asignatura);
+            $asignatura->addAlumno($this);
         }
 
         return $this;

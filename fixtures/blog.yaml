@@ -1,14 +1,14 @@
 App\Entity\Editor:
-    editor{1..10}:
+    editor{1..300}:
         username (unique): <username()>
 
 App\Entity\User:
-    user{1..100}:
+    user{1..3000}:
         username (unique): <username()>
         password: 1234
 
 App\Entity\Post:
-    post{1..700}:
+    post{1..15000}:
         title: <sentence()>
         text: <text()>
         date: <date_create()>
@@ -16,13 +16,13 @@ App\Entity\Post:
         categories: '<numberBetween(1, 3)>x @category*'
 
 App\Entity\Comment:
-    comment{1..10000}:
+    comment{1..50000}:
         text: <realText(200)>
         datetime: <date_create()>
         author: '@user*'
         post: '@post*'
 
 App\Entity\Category:
-    category{1..40}:
+    category{1..60}:
         name: <word()>
         

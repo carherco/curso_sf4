@@ -8,7 +8,7 @@ class MiSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'mi_evento' => 'mifuncion',
+            'mievento' => 'mifuncion',
         );
     }
 

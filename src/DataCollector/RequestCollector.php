@@ -15,7 +15,7 @@ class RequestCollector extends DataCollector
             'acceptable_content_types' => $request->getAcceptableContentTypes(),
         );
     }
-
+ 
     public function reset()
     {
         $this->data = array();
