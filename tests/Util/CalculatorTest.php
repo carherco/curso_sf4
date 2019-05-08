@@ -14,5 +14,6 @@ class CalculatorTest extends TestCase
 
         // assert that your calculator added the numbers correctly!
         $this->assertEquals(42, $result);
+        $this->assertInternalType('integer', $result, 'El resultado tiene que ser un integer');
     }
 }

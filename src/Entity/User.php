@@ -42,9 +42,15 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Group", mappedBy="owner")
+     */
+    private $groups;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,6 +159,37 @@ class User implements UserInterface
 
     public function __toString() {
         return $this->getUsername();
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+            $group->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+            // set the owning side to null (unless already changed)
+            if ($group->getOwner() === $this) {
+                $group->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 
 }

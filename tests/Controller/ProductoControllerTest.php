@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ProductoControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function xtestIndex()
     {
         $client = static::createClient();
 
