@@ -198,7 +198,7 @@ class ProductRepositoryTest extends KernelTestCase
 }
 ```
 
-### Los métodos setUpBeforeClass() and tearDownAfterClass()
+### Los métodos setUpBeforeClass() and tearDownAfterClass()
 
 - El método **setUpBeforeClass()** se ejecuta una única vez antes del primer test.
 - El método **tearDownAfterClass()** se ejecuta una única vez después del último test.

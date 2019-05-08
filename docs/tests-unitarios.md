@@ -1,5 +1,4 @@
-Tests Unitarios
-===============
+# Tests Unitarios
 
 Los tests unitarios no tienen nada de especial en symfony.
 
@@ -30,46 +29,46 @@ Nuestra clase de test es una clase situada dentro del directorio **tests** y que
 
 TestCase no es más que la clase de PHPUnit que contiene todos los métodos/assertions.
 
-## Mock Services
+## Mock Services
 
-https://github.com/ramunasd/symfony-container-mocks
-
+Para crear Mocks de servicios, utilizaremos la función createMock().
 
 ```php
-namespace Acme\Bundle\AcmeBundle\Tests\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+// ...
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Acme\Bundle\AcmeBundle\Service\Custom;
-
-class AcmeControllerTest extends WebTestCase
+public function testControllerResponse()
 {
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Client $client
-     */
-    private $client;
+    $matcher = $this->createMock(Routing\Matcher\UrlMatcherInterface::class);
+    // use getMock() on PHPUnit 5.3 or below
+    // $matcher = $this->getMock(Routing\Matcher\UrlMatcherInterface::class);
 
-    public function setUp()
-    {
-        parent::setUp();
+    $matcher
+        ->expects($this->once())
+        ->method('match')
+        ->will($this->returnValue([
+            '_route' => 'foo',
+            'name' => 'Fabien',
+            '_controller' => function ($name) {
+                return new Response('Hello '.$name);
+            }
+        ]))
+    ;
+    $matcher
+        ->expects($this->once())
+        ->method('getContext')
+        ->will($this->returnValue($this->createMock(Routing\RequestContext::class)))
+    ;
+    $controllerResolver = new ControllerResolver();
+    $argumentResolver = new ArgumentResolver();
 
-        $this->client = static::createClient();
-    }
+    $framework = new Framework($matcher, $controllerResolver, $argumentResolver);
 
-    public function tearDown()
-    {
-        $this->client->getContainer()->tearDown();
-        $this->client = null;
+    $response = $framework->handle(new Request());
 
-        parent::tearDown();
-    }
-
-    public function testSomethingWithMockedService()
-    {
-        $this->client->getContainer()->prophesize('acme.service.custom', Custom::class)
-            ->someMethod([])
-            ->willReturn(false);
-
-        // ...
-    }
+    $this->assertEquals(200, $response->getStatusCode());
+    $this->assertContains('Hello Fabien', $response->getContent());
 }
 ```

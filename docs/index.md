@@ -28,7 +28,6 @@
 - [Comandos de consola](./comandos-consola.md)
 - [Seguridad](./security.md)
 - [Voters](./voters.md)
-- [Emails](./emails.md)
 - [Logs](./logs.md)
 - [Cache](./cache.md)
 - [Rendimiento](./performance.md)
@@ -45,6 +44,7 @@
 
 22 y 23 de mayo (4h/4h)
 
+- [Emails](./emails.md)
 - [Workflows](./workflows.md)
 - [Bundles](./bundles.md)
 - [FOSRestBundle](https://symfony.com/doc/master/bundles/FOSRestBundle/index.html)
