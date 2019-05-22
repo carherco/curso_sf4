@@ -476,7 +476,7 @@ $client->submit($form, array(
 
 Y siempre podemos utilizar el objeto Form como si fuera un array para establecer los valores de los campos que queramos:
 
-For more complex situations, use the Form instance as an array to set the value of each field individually:
+También se pueden establecer los valores del formulario directamente a través de la variable $form como si fuera un array:
 
 ```php
 $form['name'] = 'Carlos';

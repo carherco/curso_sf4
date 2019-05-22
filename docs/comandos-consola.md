@@ -527,6 +527,16 @@ public function execute(InputInterface $input, OutputInterface $output)
 }
 ```
 
+## Eventos
+
+- ConsoleEvents::COMMAND => Antes de que se ejecute el comando
+
+- ConsoleEvents::ERROR => Si se produce una excepción
+
+- ConsoleEvents::TERMINATE => Cuando el comando termina
+
+
+## Mejoras
 
 Conviene echar un vistazo a las mejoras introducidas en las nuevas versiones de symfony:
 

@@ -1,4 +1,4 @@
-# Cómo testear si un email ha sido enviado
+# Cómo testear si un email ha sido enviado
 
 Se puede testear que un email ha sido enviado y comprobar cualquiera de sus propiedades (asunto, cuerpo, destinatario...) a través del profiler.
 
@@ -61,7 +61,7 @@ class MailControllerTest extends WebTestCase
 }
 ```
 
-## Notas
+## Notas
 
 Al testear correos debemos prestar atención a dos cosas:
 

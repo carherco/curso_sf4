@@ -40,7 +40,7 @@ class CreateUserCommandTest extends KernelTestCase
 
 CommandTester->setInputs() para responder a comandos interactivos.
 
-## Eventos
+## Eventos
 
 - ConsoleEvents::COMMAND
 

@@ -32,7 +32,7 @@
 - [Cache](./cache.md)
 - [Rendimiento](./performance.md)
 
-8 de mayo (4h)
+8 de mayo (4h) y 22 de mayo (4h)
 
 - [Testing con PHPUnit](./tests.md)
   - [Unitarios](./tests-unitarios.md)
@@ -41,11 +41,13 @@
   - [Testeo de repositorios](./testing-repositories.md)
   - [Testeo de comandos](./testing-commands.md)
   - [Testeo de emails](./testing-emails.md)
-
-22 y 23 de mayo (4h/4h)
+- [Test Driven Development y Test Driven Bug-fixing](https://github.com/carherco/curso_tdd)
 
 - [Emails](./emails.md)
 - [Workflows](./workflows.md)
+
+23 de mayo (4h)
+
 - [Bundles](./bundles.md)
 - [FOSRestBundle](https://symfony.com/doc/master/bundles/FOSRestBundle/index.html)
 - [Api Platform](https://api-platform.com)

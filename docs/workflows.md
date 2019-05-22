@@ -152,7 +152,7 @@ class Articulo
     private $estado;
 ```
 
-## Workflow vs. State Machine
+## Workflow vs. State Machine
 
 Una máquina de estados en un subset de un workflow. Las diferencias más importantes son las que siguen:
 
@@ -482,7 +482,7 @@ framework:
 
 https://symfony.com/doc/master/components/expression_language.html
 
-## Metadata (4.1)
+## Metadata (4.1)
 
 En caso de que sea necesario, se pueden almacenar metadatos en los workflows, en los places y en las transitions con la opción **metadata**. Estos metadatos pueden tan simples como un string o tan complejos como necesitemos.
 
@@ -580,7 +580,7 @@ En Twig, los metadatos están disponibles a través de la función **workflow_me
 </p>
 ```
 
-## Transition Blockers (4.1)
+## Transition Blockers (4.1)
 
 Los *transition blockers* permiten dar información acerca de por qué una transición no ha sido llevada a cabo:
 
@@ -665,7 +665,7 @@ A partir de symfony 4.1 se añade también el formato PlantUML.
 
 https://symfony.com/doc/current/workflow/dumping-workflows.html
 
-## Novedades en 4.3
+## Novedades en 4.3
 
 ### Se añade un contexto al método apply()
 
@@ -698,7 +698,7 @@ Así como la configuración del Workflow para utilizar **MethodMarkingStore**:
 +                 type: method
 ```
 
-### Modificar el contexto desde un Listener
+### Modificar el contexto desde un Listener
 
 Como pasar el contexto en cada llamada a apply() es tedioso y genera código duplicado, existe la posibilidad también de hacerlo mediante un Listener:
 
@@ -736,7 +736,7 @@ class TransitionEventSubscriber implements EventSubscriberInterface
 }
 ```
 
-### Added color to dumped workflow
+### Colores en el dump del workflow
 
 Desde la versión 4.3, es posible configurar algunos estilos del renderizado de un workflow mediante la opicón dump_style de los metadatos:
 

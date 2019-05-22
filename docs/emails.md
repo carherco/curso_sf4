@@ -211,7 +211,7 @@ swiftmailer:
     delivery_addresses: ['dev@example.com']
 ```
 
-### Enviar todos los correos a la cuenta del desarrollador con excepciones
+### Enviar todos los correos a la cuenta del desarrollador con excepciones
 
 La opción **delivery_whitelist** permite configurar expresiones regulares. Si el destinatario de un correo cumple alguna de las expresiones regulares, se le entregará el correo, además de entregarse también a los correos configurados en *delivery_addresses*.
 
@@ -242,7 +242,7 @@ web_profiler:
     intercept_redirects: true
 ```
 
-## Cómo configurar varios mailers
+## Cómo configurar varios mailers
 
 Configurar varios mailers es muy sencillo. Basta poner un nombre a cada mailer, y a partir del nombre la configuración de cada uno.
 
@@ -289,3 +289,66 @@ services:
 
     # ...
 ```
+
+## How to Spool Emails
+
+El comportamiento predeterminado del mailer de Symfony es enviar los mensajes de correo electrónico inmediatamente. Sin embargo, el envío de correo no es eficiente (consume bastante tiempo). 
+
+Para evitar que el usuario espere mientras se envía el correo electrónico a que se cargue la página siguiente, se pueden configura "poner en cola" los correos electrónicos en lugar de enviarlos directamente.
+
+Esto hace que el mailer no intente enviar el mensaje de correo electrónico, sino que lo guarde en algún lugar, como un archivo. Otro proceso puede luego leer desde el *spool* y encargarse de enviar los correos electrónicos pendientes. Actualmente solo se admite spool en archivo o en memoria.
+
+### Spool usando memoria
+
+Con esta configuración, los correos se almacenan en memoria y serán enviados justo antes de que el Kernel de Symfony termine su ejecución.
+
+Esto significa que el correo electrónico solo se envía si la solicitud completa se ejecutó sin ninguna excepción no manejada o cualquier error. 
+
+```yml
+# config/packages/swiftmailer.yaml
+swiftmailer:
+    # ...
+    spool: { type: memory }
+```
+
+### Spool usando ficheros
+
+Con esta configuración, Symfony crea una carpeta en la ruta dada para cada servicio de correo (por ejemplo, "default" para el servicio mailer predeterminado).
+
+Esta carpeta contendrá un archivo por cada correo electrónico en el spool. Hay que asegurarse por lo tanto que el directorio es escribible por Symfony.
+
+La configuración sería la siguiente:
+
+```yml
+# config/packages/swiftmailer.yaml
+swiftmailer:
+    # ...
+    spool:
+        type: file
+        path: /path/to/spooldir
+        # path: '%kernel.project_dir%/var/spool'
+```
+
+Con esta configuración, cuando la aplicación envíe un email realmente no se enviará el email, sino que se almacenará diciho en el spool.
+
+El envío de emails debe realizarse a través de la consola de comandos.
+
+> php bin/console swiftmailer:spool:send
+
+Hay una opción para limitar el número de mensajes a enviar:
+
+> php bin/console swiftmailer:spool:send --env=prod --message-limit=10
+
+Y otra opción para limitar el tiempo:
+
+> php bin/console swiftmailer:spool:send --env=prod --time-limit=10
+
+Normalmente esta tarea no se lanzará a mano sino que estará programada en un cron o similar.
+
+PRECAUCIÓN:
+
+Al crear un mensaje con SwiftMailer, se genera una clase Swift_Message. Si el servicio swiftmailer se carga de forma lazy, genera realmente un proxy llamado Swift_Message_xxxxxxxx.
+
+Con spool de memoria, esto es transparente. Pero con spool de ficheros, la clase es serializada en un archivo con su nombre de clase. Este nombre de clase **cambia cada vez que se limpia caché**. Por lo que después de limpiar caché, los mensajes no se podrán des-serializar y el comando swiftmailer:spool:send generará un error dado que la clase serializada no existe.
+
+Las soluciones son: o bien utilizar el spool de memoria, o bien cargar el servicio sin la opción lazy.
