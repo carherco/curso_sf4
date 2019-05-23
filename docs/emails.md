@@ -355,7 +355,7 @@ Las soluciones son: o bien utilizar el spool de memoria, o bien cargar el servic
 
 https://symfony.com/doc/current/service_container/lazy_services.html
 
-## Inyectar Twig en un servicio
+## Inyectar Twig en un servicio
 
 Si queremos enviar un correo desde un servicio, y queremos utilizar una plantilla de twig en ese correo, necesitamos el servicio de Twig:
 
