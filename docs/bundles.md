@@ -73,6 +73,8 @@ Contiene los Tests
 
 Un bundle puede ser tan grande o tan pequeño como la funcionalidad que implemente. Solamente debe contener los ficheros y directorios que necesite y nada más.
 
+https://symfony.com/doc/current/bundles/best_practices.html#directory-structure
+
 ## Creación de recipes
 
 Las Recipes se definen en un archivo manifest.json y pueden contener cualquier número de otros ficheros y directorios. Las recipes se almacenan en su propio repositorio, fuera del repositorio del package.
@@ -329,6 +331,8 @@ A modo de ejemplo, la siguiente recipe es la recipe de bundle FrameworkBundle:
 }
 ```
 
+https://symfony.com/doc/current/bundles/best_practices.html#installation
+
 ## Cómo sobreescribir partes de un Bundle
 
 Muchas veces queremos sobreescribir partes de un bundle. A continuación se describe cómo sobreescribir los distintos elementos de un bundle.
@@ -386,6 +390,6 @@ Debido a la forma en la que Doctrine trabaja, NO es posible sobreescribir el map
 
 Extendiendo las clases de formulario.
 
-### Tranducciones
+### Tranducciones
 
 Las traducciones no están relacionadas con bundles, sino con *domains*. Esto significa que podemos sobreescribir traducciones de cualquier fichero de un bundle simplemente incorporando la traducción en un fichero con el dominio correcto en nuestra aplicación.

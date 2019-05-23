@@ -1,4 +1,4 @@
-# Envío de Correos
+# Envío de Correos
 
 Symfony gestiona el envío de correos a través del bundle **SwiftMailerBundle**.
 
@@ -352,3 +352,19 @@ Al crear un mensaje con SwiftMailer, se genera una clase Swift_Message. Si el se
 Con spool de memoria, esto es transparente. Pero con spool de ficheros, la clase es serializada en un archivo con su nombre de clase. Este nombre de clase **cambia cada vez que se limpia caché**. Por lo que después de limpiar caché, los mensajes no se podrán des-serializar y el comando swiftmailer:spool:send generará un error dado que la clase serializada no existe.
 
 Las soluciones son: o bien utilizar el spool de memoria, o bien cargar el servicio sin la opción lazy.
+
+https://symfony.com/doc/current/service_container/lazy_services.html
+
+## Inyectar Twig en un servicio
+
+Si queremos enviar un correo desde un servicio, y queremos utilizar una plantilla de twig en ese correo, necesitamos el servicio de Twig:
+
+```php
+public function __construct(..... \Twig_Environment $twig .....)
+{
+    .......
+    $this->twig = $twig;
+}
+```
+
+así tenemos disponible $this->twig->render(....)
